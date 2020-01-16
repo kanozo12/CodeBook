@@ -12,6 +12,7 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	private final String namespace = "net.kanozo.mappers.BoardMapper";
 	
+	@Override
 	public void write(BoardVO data) {
 		session.insert(namespace + ".write", data); 
 	}
