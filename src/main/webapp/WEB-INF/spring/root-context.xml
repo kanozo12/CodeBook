@@ -8,8 +8,8 @@
 	<!-- Root Context: 모든 웹컴포넌트에 공유될 빈객체들을 생성하는 곳 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://gondr.asuscomm.com/yy_20119?useSSL=false&amp;serverTimezone=Asia/Seoul"></property>
-		<property name="username" value="yy_20119"></property>
+		<property name="url" value="jdbc:mysql://gondr.asuscomm.com/kanozo12?useSSL=false&amp;serverTimezone=Asia/Seoul"></property>
+		<property name="username" value="kanozo12"></property>
 		<property name="password" value="1234"></property>
 	</bean>
 	
@@ -26,6 +26,6 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 	
-	<context:component-scan base-package="net.gondr.dao"/>
-	<context:component-scan base-package="net.gondr.service"/>
+	<context:component-scan base-package="net.kanozo.dao"/>
+	<context:component-scan base-package="net.kanozo.service"/>
 </beans>

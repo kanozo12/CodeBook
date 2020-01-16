@@ -15,7 +15,7 @@
 
 	<!-- 전역 익셉션 처리기 -->
 	<beans:bean
-		class="net.gondr.exception.CommonExceptionHandler">
+		class="net.kanozo.exception.CommonExceptionHandler">
 	</beans:bean>
 
 	<!-- 타임리프 관련 템플릿 빈들 -->
@@ -48,15 +48,34 @@
 
 	<!-- Controller, Repositorty, Service 등을 검색할 패키지 -->
 	<context:component-scan
-		base-package="net.gondr.controller" />
+		base-package="net.kanozo.controller" />
 
 	<!-- 기본 라우터 활성화 -->
 	<default-servlet-handler />
 
-	<!-- 파일 업로드와 멀티파티 데이터 리졸버 빈 등록 -->
+	<!-- 파일 업로드를 위해 멀티파트 데이터 리졸버 빈으로 등록 -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10485760" />
+		<beans:property name="maxUploadSize" value="10485760"></beans:property>
 	</beans:bean>
 
+	<!-- 인터셉터 등록 -->
+	<beans:bean id="authInterceptor"
+		class="net.kanozo.interceptor.AuthInterceptor"></beans:bean>
+	<beans:bean id="nonAuthInterceptor"
+		class="net.kanozo.interceptor.NonAuthInterceptor"></beans:bean>
+
+	<!-- 인터셉터 맵핑 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/register" />
+			<beans:ref bean="nonAuthInterceptor" />
+		</interceptor>
+
+		<interceptor>
+			<mapping path="/user/logout" />
+			<beans:ref bean="authInterceptor" />
+		</interceptor>
+	</interceptors>
 </beans:beans>
+

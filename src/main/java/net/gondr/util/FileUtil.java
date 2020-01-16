@@ -11,50 +11,42 @@ import org.springframework.util.FileCopyUtils;
 
 public class FileUtil {
 	private static String makeThumbnail(String uploadPath, String filename) throws Exception {
+		// 원본 파일을 읽어오고
 		BufferedImage sourceImage = ImageIO.read(new File(uploadPath, filename));
 
+		// 이미지 비율 유지하고 높이 128에 맞추어 리사이징
 		BufferedImage destImage = Scalr.resize(sourceImage, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 128);
-
 		String thumbnailName = uploadPath + File.separator + "s_" + filename;
-
 		File newFile = new File(thumbnailName);
-		// 확장자 끄집어 내고
-		String extension = filename.substring(filename.lastIndexOf(".") + 1);
-		// 새로운 파일에 확장자로 다시 써줌.
-		ImageIO.write(destImage, extension.toUpperCase(), newFile);
+		String extension = filename.substring(filename.lastIndexOf(".") + 1); // 확장자
+		ImageIO.write(destImage, extension.toUpperCase(), newFile); // 새로운 파일에 해당 확장자로 다시 써줌
 
-		return thumbnailName.substring(uploadPath.length()).replace(File.separatorChar, '/');
+		// 경로 구분자를 /로 치환하여 윈도우에서도 잘 동작하도록 함
+		return "s_" + filename;
 	}
 
 	public static String uploadFile(String uploadPath, String originalName, byte[] fileData) throws Exception {
-		UUID uid = UUID.randomUUID(); // 고유이름을 위한 랜덤 아이디
-
-		// 고유한 이름으로 만들어준다.
+		UUID uid = UUID.randomUUID(); // 파일 고유 이름을 만들기 위해
 		String saveName = uid.toString() + "_" + originalName;
 
-		File upDir = new File(uploadPath); // 업로드할 디렉토리 잡아주고
+		File upDir = new File(uploadPath);
 		if (!upDir.exists()) {
-			// 해당 경로가 없다면 생성한다.
-			upDir.mkdir();
+			upDir.mkdir(); // 업로드 경로가 없다면 생성함
 		}
-		// 업로드 경로에 생성한 파일명으로 만들어주고
-		File target = new File(uploadPath, saveName);
-		// 업로드된 파일데이터를 생성한 파일로 복사해준다.
-		FileCopyUtils.copy(fileData, target);
-		// FileCopyUtils는 pom.xml에서 가져온 라이브러리이다
 
-		// 확장자 알아내고
-		String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
+		File target = new File(uploadPath, saveName); // 업로드 경로에 랜덤으로 생성한 파일 파일명으로 저장
 
-		String uploadFilename = null;
-		if (MediaUtil.getMediaType(extension) != null) {
-			// 이미지 파일이 업로드 된 거라면
-			uploadFilename = makeThumbnail(uploadPath, saveName);
+		FileCopyUtils.copy(fileData, target); // 파일 카피 유틸리티로 넘어온 데이터를 target으로 복사.
+
+		String extention = originalName.substring(originalName.lastIndexOf(".") + 1); // 확장자 알아내고
+
+		String uploadFileName = null;
+		if (MediaUtil.getMediaType(extention) != null) { // 만약 이미지 파일이 업로드 된거라면
+			uploadFileName = makeThumbnail(uploadPath, saveName);
 		} else {
-			uploadFilename = (uploadPath + File.separator + saveName).replace(File.separatorChar, '/');
+			uploadFileName = saveName;
 		}
 
-		// 저장된 파일명을 보내준다.
-		return uploadFilename;
+		return uploadFileName; // 저장된 파일명을 보내줌.(이미지면)
 	}
 }
