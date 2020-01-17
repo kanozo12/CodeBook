@@ -22,12 +22,13 @@
 		<element name="a" disable="false" />
 		<element name="pre" disable="false" />
 		<element name="code" disable="false" />
-		<element name="embed" disable="false" />		
+		<element name="embed" disable="false" />
+		
 	</elementRule>
-	
+
 	<attributeRule>
 		<attribute name="src">
-			<allowedPattern><![CDATA[['"]?\s*http://.*]]></allowedPattern>
+			<allowedPattern><![CDATA[['"]?\s*[http://]{0,1}.*]]></allowedPattern>
 		</attribute>
 		<attribute name="href">
 			<notAllowedPattern><![CDATA[(?i:script)]]></notAllowedPattern>

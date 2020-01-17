@@ -9,6 +9,34 @@ public class BoardVO {
 	private String writer;
 	private Date writeDate;
 
+	private String name;
+	private String img;
+	private Integer level;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 	public Integer getId() {
 		return id;
 	}
