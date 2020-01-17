@@ -128,8 +128,9 @@ public class UserController {
 		return "redirect:/";
 	}
 
-//	@RequestMapping(value = "user/profile", method = RequestMethod.GET)
-//	public String openProfile() {
-//		
-//	}
+	@RequestMapping(value = "profile", method = RequestMethod.GET)
+	public String openProfile() {
+
+		return "user/profile";
+	}
 }

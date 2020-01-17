@@ -71,6 +71,7 @@
 		<interceptor>
 			
 			<mapping path="/user/logout"/>
+			<mapping path="/user/profile"/>
 			<mapping path="/board/write"/>
 			<mapping path="/board/write/*"/>
 			<mapping path="/board/delete/*"/>

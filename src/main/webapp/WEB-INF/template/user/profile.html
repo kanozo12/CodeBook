@@ -8,28 +8,24 @@
 	<header th:replace="/fragments/layout :: header"></header>
 
 	<div class="container">
-		<div class="row">
-			<div class="col-10 offset-1">
-				<h2>로그인</h2>
-				<form method="post" th:action="@{/user/login}" th:object="${loginDTO}">
-					<div class="form-group">
-						<label for="userid">이메일(아이디)</label> 
-						<input type="email" class="form-control" th:errorclass="is-invalid" id="userid" placeholder="아이디로 사용할 이메일 주소" th:field="*{userid}">
-						<div th:errors="*{userid}" class="invalid-feedback">
-							사용자 아이디 오류시 보여줄 에러메시지
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label for="password">비밀번호</label>
-						<input type="password" class="form-control" id="password" th:errorclass="is-invalid" th:field="*{password}" placeholder="비밀번호를 입력하세요">
-						<div th:errors="*{password}" class="invalid-feedback">
-							비밀번호 관련 에러시 보여줄 메시지
-						</div>
-					</div>
-					
-					<button type="submit" class="btn btn-primary">로그인</button>
-				</form>
+		<div class="card text-center mt-3">
+			<h2 class="card-header"
+				th:text=" '- 프로필 조회   ' + @{${session.user.name}} + ' -' "></h2>
+			<div class="card-body">
+				<!--   이미지 박스 -->
+				<div style="width: 128px; height: 128px;">
+					<img th:src="@{ '/user/profile/' + ${session.user.img} }" alt=""
+						style="width: 128px; height: 128px;" />
+				</div>
+				<div>
+					<h4 class="card-title" th:text="${session.user.name}"></h4>
+					<p class="card-text">
+						<span class="badge badge-primary"
+							th:text="@{${session.user.name} + '(' + ${session.user.userid} + ')'}"></span>
+						<span class="badge badge-secondary"
+							th:text="@{ 'LV.[' + ${session.user.level} +']'}"></span>
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
