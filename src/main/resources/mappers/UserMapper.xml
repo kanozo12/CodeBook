@@ -17,4 +17,20 @@
 		SELECT * FROM spring_users
 		WHERE userid = #{userid} AND password = PASSWORD(#{password})
 	</select>
+	
+	<insert id="levelData">
+		INSERT INTO spring_level(level, exp) VALUES ( #{level}, #{exp} )
+	</insert>
+	
+	<delete id="clearData">
+		DELETE FROM `spring_level`
+	</delete>
+	
+	<select id="requireExp" resultType="Integer">
+		SELECT exp FROM spring_level WHERE level = #{level}
+	</select>
+	
+	<update id="setLevelAndExp">
+		UPDATE spring_users SET level = #{level}, exp = #{exp} WHERE userid = #{userid}
+	</update>
 </mapper>

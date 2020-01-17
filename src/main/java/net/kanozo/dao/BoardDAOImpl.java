@@ -1,14 +1,13 @@
 package net.kanozo.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.kanozo.domain.BoardVO;
+import net.kanozo.domain.Criteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -29,11 +28,8 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> list(Integer start, Integer cnt) {
-		Map<String, Integer> paramMap = new HashMap<>();
-		paramMap.put("start", start);
-		paramMap.put("cnt", cnt);
-		return session.selectList(namespace + ".list", paramMap);
+	public List<BoardVO> list(Criteria cri) {
+		return session.selectList(namespace + ".list", cri);
 	}
 
 	@Override
@@ -47,8 +43,8 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public Integer getCnt() {
-		return session.selectOne(namespace + ".cnt");
+	public Integer getCnt(Criteria cri) {
+		return session.selectOne(namespace + ".cnt", cri);
 	}
 
 }

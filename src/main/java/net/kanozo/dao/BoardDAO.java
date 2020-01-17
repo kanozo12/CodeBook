@@ -3,6 +3,7 @@ package net.kanozo.dao;
 import java.util.List;
 
 import net.kanozo.domain.BoardVO;
+import net.kanozo.domain.Criteria;
 
 public interface BoardDAO {
 	// 글을 쓰는 메서드
@@ -12,7 +13,7 @@ public interface BoardDAO {
 	public BoardVO view(Integer id);
 
 	// 글 리스트 보기(몇번부터 몇개를 볼 것인지)
-	public List<BoardVO> list(Integer start, Integer cnt);
+	public List<BoardVO> list(Criteria cri);
 
 	// 글 삭제
 	public void delete(Integer id);
@@ -21,5 +22,5 @@ public interface BoardDAO {
 	public void update(BoardVO data);
 	
 	//현재 글의 갯수
-	public Integer getCnt();
+	public Integer getCnt(Criteria cri);
 }

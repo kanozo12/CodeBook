@@ -21,14 +21,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.nhncorp.lucy.security.xss.LucyXssFilter;
 import com.nhncorp.lucy.security.xss.XssSaxFilter;
 
-import net.gondr.util.FileUtil;
-import net.gondr.util.MediaUtil;
-import net.gondr.validator.BoardValidator;
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
+import net.kanozo.domain.ExpData;
 import net.kanozo.domain.UploadResponse;
 import net.kanozo.domain.UserVO;
 import net.kanozo.service.BoardService;
+import net.kanozo.service.UserService;
+import net.kanozo.util.FileUtil;
+import net.kanozo.util.MediaUtil;
+import net.kanozo.validator.BoardValidator;
 
 @Controller
 @RequestMapping("/board/")
@@ -38,6 +40,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService service;
+
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value = "write", method = RequestMethod.GET)
 	public String viewWritePage(Model model) {
@@ -86,7 +91,7 @@ public class BoardController {
 		// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
 		UserVO user = (UserVO) session.getAttribute("user");
 
-		if (board.getId() != null) { // 수정
+		if (board.getId() != null) {
 			BoardVO data = service.viewArticle(board.getId());
 			if (data == null || !user.getUserid().equals(data.getWriter())) {
 				rttr.addFlashAttribute("msg", "권한이 없습니다.");
@@ -101,19 +106,22 @@ public class BoardController {
 		String clean = filter.doFilter(board.getContent());
 		board.setContent(clean);
 
+		// 실제 DB에 글을 기록함.
 		if (board.getId() != null) {
+			// 글 수정
 			service.updateArticle(board);
 		} else {
+			// 글 작성
 			service.writeArticle(board);
+			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
+			session.setAttribute("user", user);
 		}
 
-		// 실제 DB에 글을 기록함.
-		service.writeArticle(board);
 		return "redirect:/board/list";
 	}
 
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
-	public String viewArticle(@PathVariable Integer id, Model model) {
+	public String viewArticle(@PathVariable Integer id, Model model, Criteria cri) {
 		BoardVO board = service.viewArticle(id);
 		model.addAttribute("board", board);
 		return "board/view";
@@ -122,11 +130,10 @@ public class BoardController {
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String viewList(Criteria criteria, Model model) {
 
-		List<BoardVO> list = service.getArticleList((criteria.getPage() - 1) * criteria.getPerPageNum(),
-				criteria.getPerPageNum());
+		List<BoardVO> list = service.getArticleList(criteria);
 		model.addAttribute("list", list);
 
-		Integer cnt = service.countArticle();
+		Integer cnt = service.countArticle(criteria);
 		criteria.calculate(cnt);
 
 		return "board/list";
@@ -134,7 +141,8 @@ public class BoardController {
 
 	@RequestMapping(value = "write/{id}", method = RequestMethod.GET)
 	public String viewModPage(Model model, @PathVariable("id") Integer id, HttpSession session,
-			RedirectAttributes rttr) { // 리다이렉트시에도 값이 세션에 한번 남아 있음 -> 원래는 리다이렉트시 요청이 사라짐
+			RedirectAttributes rttr) {
+
 		BoardVO data = service.viewArticle(id);
 		UserVO user = (UserVO) session.getAttribute("user");
 
@@ -142,8 +150,22 @@ public class BoardController {
 			rttr.addFlashAttribute("msg", "수정할 권한이 없습니다.");
 			return "redirect:/board/list";
 		}
-		model.addAttribute("BoardVO", data);
+
+		model.addAttribute("boardVO", data);
 		return "board/write";
 	}
 
+	@RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+	public String deleteArticle(@PathVariable("id") Integer id, HttpSession session, RedirectAttributes rttr) {
+		UserVO user = (UserVO) session.getAttribute("user");
+		BoardVO data = service.viewArticle(id);
+
+		if (!user.getUserid().equals(data.getWriter())) {
+			rttr.addFlashAttribute("msg", "삭제 권한이 없습니다.");
+			return "redirect:/board/view/" + data.getId();
+		}
+		service.deleteArticle(id);
+		rttr.addFlashAttribute("msg", "성공적으로 삭제되었습니다.");
+		return "redirect:/board/list";
+	}
 }

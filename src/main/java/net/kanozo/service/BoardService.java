@@ -3,6 +3,7 @@ package net.kanozo.service;
 import java.util.List;
 
 import net.kanozo.domain.BoardVO;
+import net.kanozo.domain.Criteria;
 
 public interface BoardService {
 	// 글쓰기
@@ -12,7 +13,7 @@ public interface BoardService {
 	public BoardVO viewArticle(Integer id);
 
 	// 글 리스트 보기
-	public List<BoardVO> getArticleList(Integer start, Integer cnt);
+	public List<BoardVO> getArticleList(Criteria cri);
 
 	// 글 수정하기
 	public void updateArticle(BoardVO board);
@@ -21,5 +22,5 @@ public interface BoardService {
 	public void deleteArticle(Integer id);
 
 	// 글 갯수 가져오기
-	public Integer countArticle();
+	public Integer countArticle(Criteria cri);
 }

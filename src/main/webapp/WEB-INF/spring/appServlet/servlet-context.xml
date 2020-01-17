@@ -53,31 +53,29 @@
 	<!-- 기본 라우터 활성화 -->
 	<default-servlet-handler />
 
-	<!-- 파일 업로드를 위해 멀티파트 데이터 리졸버 빈으로 등록 -->
+	<!-- 파일 업로드와 멀티파티 데이터 리졸버 빈 등록 -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10485760"></beans:property>
+		<beans:property name="maxUploadSize" value="10485760"/>
 	</beans:bean>
-
-	<!-- 인터셉터 등록 -->
-	<beans:bean id="authInterceptor"
-		class="net.kanozo.interceptor.AuthInterceptor"></beans:bean>
-	<beans:bean id="nonAuthInterceptor"
-		class="net.kanozo.interceptor.NonAuthInterceptor"></beans:bean>
-
-	<!-- 인터셉터 맵핑 -->
+	
+	<!-- 인터셉터 등록과 맵핑 -->
+	<beans:bean id="authInterceptor" class="net.kanozo.interceptor.AuthInterceptor"/>
+	<beans:bean id="nonAuthInterceptor" class="net.kanozo.interceptor.NonAuthInterceptor"/>
+	
 	<interceptors>
 		<interceptor>
-			<mapping path="/user/register" />
-			<beans:ref bean="nonAuthInterceptor" />
+			<mapping path="/user/register"/>
+			<beans:ref bean="nonAuthInterceptor"/>
 		</interceptor>
-
 		<interceptor>
-			<mapping path="/user/logout" />
-			<mapping path="/board/write/*" />
-			<mapping path="/board/delete/*" />
-			<beans:ref bean="authInterceptor" />
+			
+			<mapping path="/user/logout"/>
+			<mapping path="/board/write"/>
+			<mapping path="/board/write/*"/>
+			<mapping path="/board/delete/*"/>
+			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>
+	
 </beans:beans>
-

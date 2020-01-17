@@ -1,4 +1,4 @@
-package net.gondr.util;
+package net.kanozo.util;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package net.gondr.validator;
+package net.kanozo.validator;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

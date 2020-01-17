@@ -1,12 +1,12 @@
-package net.gondr.validator;
+package net.kanozo.validator;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.gondr.util.MediaUtil;
 import net.kanozo.domain.RegisterDTO;
+import net.kanozo.util.MediaUtil;
 
 public class RegisterValidator implements Validator {
 

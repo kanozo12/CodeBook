@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import net.kanozo.dao.BoardDAO;
 import net.kanozo.domain.BoardVO;
+import net.kanozo.domain.Criteria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -21,11 +22,11 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO viewArticle(Integer id) {
 		return dao.view(id);
 	}
-	
-	public List<BoardVO> getArticleList(Integer start, Integer cnt) {
-		return dao.list(start, cnt);
+
+	public List<BoardVO> getArticleList(Criteria cri) {
+		return dao.list(cri);
 	}
-	
+
 	public void updateArticle(BoardVO board) {
 		dao.update(board);
 	}
@@ -33,8 +34,8 @@ public class BoardServiceImpl implements BoardService {
 	public void deleteArticle(Integer id) {
 		dao.delete(id);
 	}
- 
-	public Integer countArticle() {
-		return dao.getCnt();
+
+	public Integer countArticle(Criteria cri) {
+		return dao.getCnt(cri);
 	}
 }
