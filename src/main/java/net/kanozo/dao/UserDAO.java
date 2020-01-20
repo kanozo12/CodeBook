@@ -20,4 +20,6 @@ public interface UserDAO {
 
 	// 레벨과 경험치 셋팅하기
 	public void setLevelAndExp(UserVO user);
+	
+	public UserVO getCnt(String userid);
 }

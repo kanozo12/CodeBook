@@ -14,4 +14,6 @@ public interface UserService {
 	
 	//회원에게 경험치 추가하기
 	public UserVO appExp(String userid, Integer exp);
+	
+	public UserVO getCnt(String userid);
 }

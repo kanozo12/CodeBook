@@ -1,0 +1,7 @@
+SELECT u.*, b.cnt FROM spring_users AS u,
+(SELECT writer, COUNT(*) AS cnt FROM spring_boards GROUP BY writer) AS b
+WHERE b.writer = u.userid AND userid = 'asd@asd'
+
+
+
+SELECT COUNT(*) FROM spring_users a, spring_boards b WHERE a.userid = b.writer

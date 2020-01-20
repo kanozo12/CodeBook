@@ -58,4 +58,9 @@ public class UserDAOImpl implements UserDAO {
 	public void setLevelAndExp(UserVO user) {
 		session.update(ns + ".setLevelAndExp", user);
 	}
+	
+	@Override
+	public UserVO getCnt(String userid) {
+		return session.selectOne(ns + ".selectWriteCnt", userid);
+	}
 }

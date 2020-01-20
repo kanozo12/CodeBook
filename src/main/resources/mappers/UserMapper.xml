@@ -33,4 +33,8 @@
 	<update id="setLevelAndExp">
 		UPDATE spring_users SET level = #{level}, exp = #{exp} WHERE userid = #{userid}
 	</update>
+	
+	<select id="selectWriteCnt" resultType="UserVO">
+		SELECT COUNT(*) FROM spring_users a, spring_boards b WHERE a.userid = b.writer AND userid = #{userid}
+	</select>
 </mapper>

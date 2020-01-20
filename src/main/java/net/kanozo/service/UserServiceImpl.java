@@ -50,9 +50,13 @@ public class UserServiceImpl implements UserService {
 
 		// 경험치 증가 처리후 DB에 저장
 		userDao.setLevelAndExp(user);
-		
+
 		return user;
 	}
-	
-	
+
+	@Override
+	public UserVO getCnt(String userid) {
+		return userDao.getCnt(userid);
+	}
+
 }

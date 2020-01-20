@@ -7,6 +7,15 @@ public class UserVO {
 	private Integer exp;
 	private Integer level;
 	private String img;
+	private Integer cnt;
+
+	public Integer getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(Integer cnt) {
+		this.cnt = cnt;
+	}
 
 	public String getUserid() {
 		return userid;

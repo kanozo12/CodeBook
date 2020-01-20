@@ -24,6 +24,8 @@
 							th:text="@{${session.user.name} + '(' + ${session.user.userid} + ')'}"></span>
 						<span class="badge badge-secondary"
 							th:text="@{ 'LV.[' + ${session.user.level} +']'}"></span>
+						<span class="badge badge-primary"
+						th:text="@{${session.user.cnt}}"></span>
 					</p>
 				</div>
 			</div>
