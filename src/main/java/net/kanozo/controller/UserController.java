@@ -100,24 +100,28 @@ public class UserController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "profile/{file:.+}", method = RequestMethod.GET)
+	@RequestMapping(value = "info", method = RequestMethod.GET)
+	public String openProfile() {
+
+		return "user/info";
+	}
+
+	@RequestMapping(value = { "profile", "profile/{file:.+}" }, method = RequestMethod.GET)
 	@ResponseBody
 	public byte[] getUserProfile(@PathVariable Optional<String> file) throws IOException {
 		String uploadPath = context.getRealPath("/WEB-INF/upload");
 		String imgFile = "default.png";
-
 		if (file.isPresent()) {
 			imgFile = file.get();
 		}
-
 		try {
-			File profile = new File(uploadPath + File.separator + imgFile);
-			FileInputStream fis = new FileInputStream(profile);
-			return IOUtils.toByteArray(fis);
+			File profile = new File(uploadPath + File.separator + file);
+			FileInputStream in = new FileInputStream(profile);
+			return IOUtils.toByteArray(in);
 		} catch (FileNotFoundException e) {
-			File profile = new File(uploadPath + File.separator + "dafault.png");
-			FileInputStream fis = new FileInputStream(profile);
-			return IOUtils.toByteArray(fis);
+			File profile = new File(uploadPath + File.separator + "default.png");
+			FileInputStream in = new FileInputStream(profile);
+			return IOUtils.toByteArray(in);
 		}
 	}
 
@@ -126,11 +130,5 @@ public class UserController {
 		service.fillLevelTable(200); // 200레벨 까지 경험치 생성
 		rttr.addFlashAttribute("msg", "레벨 생성이 완료되었습니다.");
 		return "redirect:/";
-	}
-
-	@RequestMapping(value = "profile", method = RequestMethod.GET)
-	public String openProfile() {
-
-		return "user/profile";
 	}
 }

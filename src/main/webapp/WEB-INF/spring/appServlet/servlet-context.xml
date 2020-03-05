@@ -66,6 +66,7 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/user/register"/>
+			<mapping path="/user/login"/>
 			<beans:ref bean="nonAuthInterceptor"/>
 		</interceptor>
 		<interceptor>
@@ -75,6 +76,7 @@
 			<mapping path="/board/write"/>
 			<mapping path="/board/write/*"/>
 			<mapping path="/board/delete/*"/>
+			<mapping path="/com/*"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>

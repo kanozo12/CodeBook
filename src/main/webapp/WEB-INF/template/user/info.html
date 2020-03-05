@@ -11,22 +11,27 @@
 		<div class="card text-center mt-3">
 			<h2 class="card-header"
 				th:text=" '- 프로필 조회   ' + @{${session.user.name}} + ' -' "></h2>
-			<div class="card-body">
+			<div class="card-body d-flex">
 				<!--   이미지 박스 -->
 				<div style="width: 128px; height: 128px;">
 					<img th:src="@{ '/user/profile/' + ${session.user.img} }" alt=""
 						style="width: 128px; height: 128px;" />
 				</div>
+
 				<div>
 					<h4 class="card-title" th:text="${session.user.name}"></h4>
 					<p class="card-text">
 						<span class="badge badge-primary"
 							th:text="@{${session.user.name} + '(' + ${session.user.userid} + ')'}"></span>
 						<span class="badge badge-secondary"
-							th:text="@{ 'LV.[' + ${session.user.level} +']'}"></span>
-						<span class="badge badge-primary"
-						th:text="@{${session.user.cnt}}"></span>
+							th:text="@{ 'LV.[' + ${session.user.level} +']'}"></span> <span
+							class="badge badge-primary" th:text="@{${session.user.cnt}}"></span>
 					</p>
+
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" th:style="'width:' + @{${session.user.exp}} + '%;'"
+							aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+					</div>
 				</div>
 			</div>
 		</div>

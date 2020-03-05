@@ -22,11 +22,13 @@ import com.nhncorp.lucy.security.xss.LucyXssFilter;
 import com.nhncorp.lucy.security.xss.XssSaxFilter;
 
 import net.kanozo.domain.BoardVO;
+import net.kanozo.domain.ComVO;
 import net.kanozo.domain.Criteria;
 import net.kanozo.domain.ExpData;
 import net.kanozo.domain.UploadResponse;
 import net.kanozo.domain.UserVO;
 import net.kanozo.service.BoardService;
+import net.kanozo.service.CommentService;
 import net.kanozo.service.UserService;
 import net.kanozo.util.FileUtil;
 import net.kanozo.util.MediaUtil;
@@ -43,6 +45,9 @@ public class BoardController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private CommentService cService;
 
 	@RequestMapping(value = "write", method = RequestMethod.GET)
 	public String viewWritePage(Model model) {
@@ -121,9 +126,16 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
-	public String viewArticle(@PathVariable Integer id, Model model, Criteria cri) {
+	public String viewArticle(@PathVariable Integer id, Model model, Criteria cri, HttpSession session, Criteria criteria) {
 		BoardVO board = service.viewArticle(id);
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		List<ComVO> list = cService.list(id);
+		
 		model.addAttribute("board", board);
+		model.addAttribute("user", user);
+		model.addAttribute("list", list);
+
 		return "board/view";
 	}
 
@@ -137,6 +149,25 @@ public class BoardController {
 		criteria.calculate(cnt);
 
 		return "board/list";
+	}
+	
+	@RequestMapping(value = "/replyInsert", method = RequestMethod.POST)
+	public String insert(ComVO comVO, HttpSession session, RedirectAttributes rttr, Criteria criteria) {
+		Integer bno = comVO.getBno();
+		
+		UserVO user = (UserVO) session.getAttribute("user");
+		
+		// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
+		LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
+		String clean = filter.doFilter(comVO.getComContent());
+		comVO.setComContent(clean);
+		
+		cService.insert(comVO);
+		
+		user = userService.appExp(user.getUserid(), ExpData.SMALL); // 글을 한번 쓸 때마다 2의 exp를 지급
+		session.setAttribute("user", user);
+		
+		return "redirect:/board/view/" + bno + criteria.getQuery(criteria.getPage());
 	}
 
 	@RequestMapping(value = "write/{id}", method = RequestMethod.GET)
