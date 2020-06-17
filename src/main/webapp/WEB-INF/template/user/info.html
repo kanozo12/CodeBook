@@ -24,12 +24,12 @@
 						<span class="badge badge-primary"
 							th:text="@{${session.user.name} + '(' + ${session.user.userid} + ')'}"></span>
 						<span class="badge badge-secondary"
-							th:text="@{ 'LV.[' + ${session.user.level} +']'}"></span> <span
+							th:text="@{ 'LV.[' + ${session.user.u_level} +']'}"></span> <span
 							class="badge badge-primary" th:text="@{${session.user.cnt}}"></span>
 					</p>
 
 					<div class="progress">
-						<div class="progress-bar" role="progressbar" th:style="'width:' + @{${session.user.exp}} + '%;'"
+						<div class="progress-bar" role="progressbar" th:style="'width:' + @{${session.user.u_exp}} + '%;'"
 							aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
 				</div>

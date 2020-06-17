@@ -11,27 +11,26 @@
 		</if>
 	</sql>
 	<insert id="write">
-		INSERT INTO spring_boards (title, content, writer, writeDate)
-		VALUES ( #{title}, #{content}, #{writer}, NOW() )
+		INSERT INTO SPRING_BOARDS (ID, TITLE, CONTENT, WRITER, WRITEDATE)
+		VALUES (AUTO_INCREMENT.NEXTVAL, #{title}, #{content}, #{writer}, TO_DATE(SYSDATE,'yyyy-mm-dd hh:mi:ss'))
 	</insert>
 	<select id="list" resultType="BoardVO">
-		SELECT id, title , writer, writeDate FROM spring_boards
+		SELECT ID, TITLE , WRITER, WRITEDATE FROM (SELECT ROWNUM AS NO, ID, TITLE , WRITER, WRITEDATE FROM SPRING_BOARDS) WHERE NO
 		<include refid="search"></include>
-		ORDER BY id DESC LIMIT #{pageStart}, #{perPageNum}
+		 <![CDATA[>]]> #{pageStart} AND NO <![CDATA[<=]]> #{pageStart} <![CDATA[+]]> #{perPageNum} ORDER BY ID DESC
 	</select>
 	<update id="update">
-		UPDATE spring_boards SET content = #{content}, 
-		title = #{title} WHERE id = #{id}
+		UPDATE SPRING_BOARDS SET CONTENT = #{content}, 
+		TITLE = #{title} WHERE ID = #{id}
 	</update> 
 	<delete id="delete">
-		DELETE FROM spring_boards WHERE id = #{id}
+		DELETE FROM SPRING_BOARDS WHERE ID = #{id}
 	</delete>
 	<select id="view" resultType="BoardVO">
-		SELECT b.*, u.name, u.img, u.level FROM spring_boards AS b, 
-		spring_users AS u WHERE id = #{id} AND u.userid = b.writer
+		SELECT B.*, U.NAME, U.IMG, U.U_LEVEL FROM SPRING_BOARDS B, SPRING_USERS U WHERE ID = #{id} AND U.USERID = B.WRITER
 	</select>
 	<select id="cnt" resultType="Integer">
-		SELECT count(*) FROM spring_boards
+		SELECT COUNT(*) FROM SPRING_BOARDS
 		<include refid="search"></include>
 	</select>
 </mapper>

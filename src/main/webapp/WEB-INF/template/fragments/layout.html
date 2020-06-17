@@ -49,7 +49,7 @@
 			
 			<div th:if="${session.user != null}">
 				<button class="btn btn-outline-success mr-sm-2" th:text="${session.user.name} + '님'" onclick="location.href='/user/info'"></button>
-				<button class="btn btn-dark mr-sm-2" th:text="'LV &nbsp;' + ${session.user.level}"></button>
+				<button class="btn btn-dark mr-sm-2" th:text="'LV &nbsp;' + ${session.user.u_level}"></button>
 				<a href="/user/logout" class="btn btn-outline-warning mr-sm-2">로그아웃</a>
 			</div>
 		</div>

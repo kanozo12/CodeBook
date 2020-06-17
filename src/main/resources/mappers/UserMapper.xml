@@ -5,8 +5,7 @@
 
 <mapper namespace="net.kanozo.mappers.UserMapper">
 	<insert id="insertUser">
-		INSERT INTO spring_users (userid, name, password, exp, level, img)
-		VALUES ( #{userid}, #{name}, PASSWORD(#{password}), 0, 1, #{img})
+		INSERT INTO spring_users (userid, name, password, u_exp, u_level, img) VALUES ( #{userid}, #{name}, #{password}, 0, 1, #{img})
 	</insert>
 	
 	<select id="selectUser" resultType="UserVO">
@@ -15,23 +14,23 @@
 	
 	<select id="loginUser" resultType="UserVO">
 		SELECT * FROM spring_users
-		WHERE userid = #{userid} AND password = PASSWORD(#{password})
+		WHERE userid = #{userid} AND password = #{password}
 	</select>
 	
 	<insert id="levelData">
-		INSERT INTO spring_level(level, exp) VALUES ( #{level}, #{exp} )
+		INSERT INTO spring_level(s_level, s_exp) VALUES ( #{level}, #{exp} )
 	</insert>
 	
 	<delete id="clearData">
-		DELETE FROM `spring_level`
+		DELETE FROM spring_level
 	</delete>
 	
 	<select id="requireExp" resultType="Integer">
-		SELECT exp FROM spring_level WHERE level = #{level}
+		SELECT s_exp FROM spring_level WHERE s_level = #{u_level}
 	</select>
 	
 	<update id="setLevelAndExp">
-		UPDATE spring_users SET level = #{level}, exp = #{exp} WHERE userid = #{userid}
+		UPDATE spring_users SET u_level = #{u_level}, u_exp = #{u_exp} WHERE userid = #{userid}
 	</update>
 	
 	<select id="selectWriteCnt" resultType="UserVO">

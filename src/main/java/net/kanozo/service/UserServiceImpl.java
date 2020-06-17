@@ -40,12 +40,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO appExp(String userid, Integer exp) {
 		UserVO user = userDao.getUser(userid);
-		user.setExp(user.getExp() + exp);
-		Integer requireExp = userDao.getRequireExp(user.getLevel() + 1);
+		user.setU_exp(user.getU_exp() + exp);
+		Integer requireExp = userDao.getRequireExp(user.getU_level() + 1);
 
-		if (user.getExp() >= requireExp) {
-			user.setExp(user.getExp() - requireExp);
-			user.setLevel(user.getLevel() + 1);
+		if (user.getU_exp() >= requireExp) {
+			user.setU_exp(user.getU_exp() - requireExp);
+			user.setU_level(user.getU_level() + 1);
 		}
 
 		// 경험치 증가 처리후 DB에 저장

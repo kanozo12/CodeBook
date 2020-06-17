@@ -147,7 +147,10 @@ public class BoardController {
 
 		Integer cnt = service.countArticle(criteria);
 		criteria.calculate(cnt);
+		
 
+		System.out.println(criteria.getPageStart());
+		System.out.println(criteria.getPerPageNum());
 		return "board/list";
 	}
 	

@@ -78,7 +78,7 @@ public class UserController {
 		}
 
 		UserVO user = service.login(loginDTO.getUserid(), loginDTO.getPassword());
-
+		System.out.println(user);
 		if (user == null) {
 			model.addAttribute("msg", msg);
 			return "user/login";
@@ -101,7 +101,14 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "info", method = RequestMethod.GET)
-	public String openProfile() {
+	public String openProfile(HttpSession session, Model model) {
+		String msg = "로그인 후 이용하세요.";
+		UserVO user = (UserVO) session.getAttribute("user");
+		
+		if (user == null) {
+			model.addAttribute("msg", msg);
+			return "redirect:/user/login";
+		}
 
 		return "user/info";
 	}
