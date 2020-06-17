@@ -6,23 +6,23 @@
 <mapper namespace="net.kanozo.mappers.BoardMapper">
 	<sql id="search">
 		<if test="keyword != null">
-			WHERE title LIKE CONCAT('%', #{keyword}, '%') OR content
-			LIKE CONCAT('%', #{keyword}, '%')
+			WHERE TITLE LIKE '%'||#{keyword}||'%' OR content
+			LIKE '%'||#{keyword}||'%'
 		</if>
 	</sql>
 	<insert id="write">
 		INSERT INTO SPRING_BOARDS (ID, TITLE, CONTENT, WRITER, WRITEDATE)
-		VALUES (AUTO_INCREMENT.NEXTVAL, #{title}, #{content}, #{writer}, TO_DATE(SYSDATE,'yyyy-mm-dd hh:mi:ss'))
+		VALUES (AUTO_INCREMENT.NEXTVAL, #{title}, #{content}, #{writer}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	<select id="list" resultType="BoardVO">
-		SELECT ID, TITLE , WRITER, WRITEDATE FROM (SELECT ROWNUM AS NO, ID, TITLE , WRITER, WRITEDATE FROM SPRING_BOARDS) WHERE NO
+		SELECT ID, TITLE , WRITER, WRITEDATE FROM (SELECT ROWNUM AS NO, ID, TITLE , WRITER, WRITEDATE FROM SPRING_BOARDS)
 		<include refid="search"></include>
-		 <![CDATA[>]]> #{pageStart} AND NO <![CDATA[<=]]> #{pageStart} <![CDATA[+]]> #{perPageNum} ORDER BY ID DESC
+		WHERE NO <![CDATA[>]]> #{pageStart} AND NO <![CDATA[<=]]> #{pageStart} <![CDATA[+]]> #{perPageNum} ORDER BY ID DESC
 	</select>
 	<update id="update">
 		UPDATE SPRING_BOARDS SET CONTENT = #{content}, 
 		TITLE = #{title} WHERE ID = #{id}
-	</update> 
+	</update> 														
 	<delete id="delete">
 		DELETE FROM SPRING_BOARDS WHERE ID = #{id}
 	</delete>

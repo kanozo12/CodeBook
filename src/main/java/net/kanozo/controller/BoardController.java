@@ -129,13 +129,11 @@ public class BoardController {
 	public String viewArticle(@PathVariable Integer id, Model model, Criteria cri, HttpSession session, Criteria criteria) {
 		BoardVO board = service.viewArticle(id);
 		UserVO user = (UserVO) session.getAttribute("user");
-
 		List<ComVO> list = cService.list(id);
-		
 		model.addAttribute("board", board);
 		model.addAttribute("user", user);
 		model.addAttribute("list", list);
-
+		
 		return "board/view";
 	}
 

@@ -7,8 +7,8 @@
 <!-- 오라클 코드로 변환해야됨 -->
 	<!-- 댓글 입력 -->
 	<insert id="insertComment">
-		INSERT INTO spring_boards_comment (bno, comcontent, comwriter, username, regDate)
-		VALUES (#{bno}, #{comContent}, #{comWriter}, #{userName}, NOW())
+		INSERT INTO spring_boards_comment (cno, bno, comcontent, comwriter, username, regDate)
+		VALUES (AUTO_INCREMENT.NEXTVAL, #{bno}, #{comContent}, #{comWriter}, #{userName}, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'))
 	</insert>
 	
 	<!-- 댓글 목록 -->

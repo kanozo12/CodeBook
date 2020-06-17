@@ -76,6 +76,8 @@
 			<mapping path="/board/write"/>
 			<mapping path="/board/write/*"/>
 			<mapping path="/board/delete/*"/>
+			<mapping path="/user/info"/>
+			<mapping path="/user/replyInsert"/>
 			<mapping path="/com/*"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>

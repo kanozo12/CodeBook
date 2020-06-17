@@ -8,8 +8,8 @@ public class ComVO {
 	private String comContent; // 댓글 내용
 	private String comWriter; // 댓글 작성자
 	private String userName; // 댓글 작성자의 이름(회원의 이름)
-	private Date regDate; // 댓글 작성일자
-	private Date upDateDate; // 댓글 수정 일자
+	private String regDate; // 댓글 작성일자
+	private String upDateDate; // 댓글 수정 일자
 
 	public Integer getCno() {
 		return cno;
@@ -51,26 +51,20 @@ public class ComVO {
 		this.userName = userName;
 	}
 
-	public Date getRegDate() {
+	public String getRegDate() {
 		return regDate;
 	}
 
-	public void setRegDate(Date regDate) {
+	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
 
-	public Date getUpDateDate() {
+	public String getUpDateDate() {
 		return upDateDate;
 	}
 
-	public void setUpDateDate(Date upDateDate) {
+	public void setUpDateDate(String upDateDate) {
 		this.upDateDate = upDateDate;
-	}
-
-	@Override
-	public String toString() {
-		return "ComVO [bno=" + bno + ", comContent=" + comContent + ", comWriter=" + comWriter
-				+ ", userName=" + userName + "]";
 	}
 
 }

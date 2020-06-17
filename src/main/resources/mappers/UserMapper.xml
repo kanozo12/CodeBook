@@ -18,7 +18,7 @@
 	</select>
 	
 	<insert id="levelData">
-		INSERT INTO spring_level(s_level, s_exp) VALUES ( #{level}, #{exp} )
+		INSERT INTO spring_level(s_level, s_exp) VALUES ( #{s_level}, #{s_exp} )
 	</insert>
 	
 	<delete id="clearData">
