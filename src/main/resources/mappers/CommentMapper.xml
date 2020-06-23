@@ -8,7 +8,7 @@
 	<!-- 댓글 입력 -->
 	<insert id="insertComment">
 		INSERT INTO spring_boards_comment (cno, bno, comcontent, comwriter, username, regDate)
-		VALUES (AUTO_INCREMENT.NEXTVAL, #{bno}, #{comContent}, #{comWriter}, #{userName}, TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'))
+		VALUES (AUTO_INCREMENT.NEXTVAL, #{bno}, #{comContent}, #{comWriter}, #{userName}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	
 	<!-- 댓글 목록 -->

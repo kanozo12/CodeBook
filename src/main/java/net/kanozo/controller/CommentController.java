@@ -39,8 +39,6 @@ public class CommentController {
 		comVO.setComWriter(userid);
 		comVO.setUserName(user.getName());
 		
-		System.out.println(comVO);
-		
 		cService.insert(comVO);
 	}
 

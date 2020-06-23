@@ -78,14 +78,16 @@ public class UserController {
 		}
 
 		UserVO user = service.login(loginDTO.getUserid(), loginDTO.getPassword());
-		System.out.println(user);
 		if (user == null) {
 			model.addAttribute("msg", msg);
 			return "user/login";
 		}
 
 		session.setAttribute("user", user);
-		return "redirect:/"; // 로그인 성공시 메인페이지로 리다이렉트
+		
+		System.out.println("login...ok");
+		System.out.println(user);
+		return "redirect:/"; // 로그인 성공시 메인페이지로 리다이렉트\
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)

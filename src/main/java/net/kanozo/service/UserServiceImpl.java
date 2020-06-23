@@ -42,7 +42,8 @@ public class UserServiceImpl implements UserService {
 		UserVO user = userDao.getUser(userid);
 		user.setU_exp(user.getU_exp() + exp);
 		Integer requireExp = userDao.getRequireExp(user.getU_level() + 1);
-
+		System.out.println(user.getCnt());
+		System.out.println(user);
 		if (user.getU_exp() >= requireExp) {
 			user.setU_exp(user.getU_exp() - requireExp);
 			user.setU_level(user.getU_level() + 1);

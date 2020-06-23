@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.kanozo.mappers.BoardMapper">
+<mapper namespace="net.kanozo.mappers.FreeMapper">
 	<sql id="search">
 		<if test="keyword != null">
 			AND TITLE LIKE '%' ||  #{keyword} || '%' OR CONTENT LIKE '%' ||  #{keyword} || '%'

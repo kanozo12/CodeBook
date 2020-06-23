@@ -17,33 +17,10 @@
 	<beans:bean
 		class="net.kanozo.exception.CommonExceptionHandler">
 	</beans:bean>
-
-	<!-- 타임리프 관련 템플릿 빈들 -->
-	<beans:bean id="templateResolver"
-		class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
-		<beans:property name="prefix"
-			value="/WEB-INF/template/"></beans:property>
-		<beans:property name="suffix" value=".html"></beans:property>
-		<beans:property name="characterEncoding" value="UTF-8"></beans:property>
-		<beans:property name="templateMode" value="HTML"></beans:property>
-		<beans:property name="cacheable" value="true"></beans:property>
-	</beans:bean>
-
-	<beans:bean id="templateEngine"
-		class="org.thymeleaf.spring5.SpringTemplateEngine">
-		<beans:property name="templateResolver"
-			ref="templateResolver"></beans:property>
-		<beans:property name="enableSpringELCompiler"
-			value="true"></beans:property>
-	</beans:bean>
-
-	<beans:bean id="viewResolver"
-		class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
-		<beans:property name="templateEngine"
-			ref="templateEngine"></beans:property>
-		<beans:property name="characterEncoding" value="UTF-8"></beans:property>
-		<beans:property name="order" value="1"></beans:property>
-
+	
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/template/" />
+		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
 	<!-- Controller, Repositorty, Service 등을 검색할 패키지 -->

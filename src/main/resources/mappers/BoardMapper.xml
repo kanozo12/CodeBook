@@ -6,31 +6,55 @@
 <mapper namespace="net.kanozo.mappers.BoardMapper">
 	<sql id="search">
 		<if test="keyword != null">
-			WHERE TITLE LIKE '%'||#{keyword}||'%' OR content
-			LIKE '%'||#{keyword}||'%'
+			AND TITLE LIKE '%' ||  #{keyword} || '%' OR CONTENT LIKE '%' ||  #{keyword} || '%'
 		</if>
 	</sql>
+	
 	<insert id="write">
-		INSERT INTO SPRING_BOARDS (ID, TITLE, CONTENT, WRITER, WRITEDATE)
+		INSERT 
+			INTO SPRING_BOARDS (ID, TITLE, CONTENT, WRITER, WRITEDATE)
 		VALUES (AUTO_INCREMENT.NEXTVAL, #{title}, #{content}, #{writer}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	<select id="list" resultType="BoardVO">
-		SELECT ID, TITLE , WRITER, WRITEDATE FROM (SELECT ROWNUM AS NO, ID, TITLE , WRITER, WRITEDATE FROM SPRING_BOARDS)
-		<include refid="search"></include>
-		WHERE NO <![CDATA[>]]> #{pageStart} AND NO <![CDATA[<=]]> #{pageStart} <![CDATA[+]]> #{perPageNum} ORDER BY ID DESC
+		SELECT ID, TITLE, CONTENT, WRITER, WRITEDATE 
+		FROM 
+			(
+				SELECT ROW_NUMBER() OVER(ORDER BY ID DESC) NO, ID, TITLE, CONTENT, WRITER, WRITEDATE 
+				FROM 
+					SPRING_BOARDS 
+				WHERE 1=1
+					<include refid="search"></include>
+			) 
+			WHERE 
+				NO  <![CDATA[>]]> #{pageStart} AND NO <![CDATA[<=]]> #{pageStart} <![CDATA[+]]> #{perPageNum}
+		
 	</select>
 	<update id="update">
-		UPDATE SPRING_BOARDS SET CONTENT = #{content}, 
-		TITLE = #{title} WHERE ID = #{id}
+		UPDATE 
+			SPRING_BOARDS SET CONTENT = #{content}, TITLE = #{title} 
+		WHERE 
+			ID = #{id}
 	</update> 														
 	<delete id="delete">
-		DELETE FROM SPRING_BOARDS WHERE ID = #{id}
+		DELETE 
+		FROM 
+			SPRING_BOARDS 
+		WHERE 
+			ID = #{id}
 	</delete>
 	<select id="view" resultType="BoardVO">
-		SELECT B.*, U.NAME, U.IMG, U.U_LEVEL FROM SPRING_BOARDS B, SPRING_USERS U WHERE ID = #{id} AND U.USERID = B.WRITER
+		SELECT B.*, U.NAME, U.IMG, U.U_LEVEL 
+		FROM 
+			SPRING_BOARDS B, SPRING_USERS U 
+		WHERE 
+			ID = #{id} AND U.USERID = B.WRITER
 	</select>
 	<select id="cnt" resultType="Integer">
-		SELECT COUNT(*) FROM SPRING_BOARDS
+		SELECT COUNT(*) 
+		FROM 
+			SPRING_BOARDS 
+		WHERE 
+			1=1
 		<include refid="search"></include>
 	</select>
 </mapper>

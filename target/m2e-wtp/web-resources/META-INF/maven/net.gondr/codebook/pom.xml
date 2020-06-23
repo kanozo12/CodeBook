@@ -154,7 +154,12 @@
 			<artifactId>ojdbc6</artifactId>
 			<version>12.1.0.2</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/jstl/jstl -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 
 	<!-- 빌드시 필요한 메이븐 플러그인 -->

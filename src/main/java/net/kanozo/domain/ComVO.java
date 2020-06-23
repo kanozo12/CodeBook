@@ -1,7 +1,5 @@
 package net.kanozo.domain;
 
-import java.sql.Date;
-
 public class ComVO {
 	private Integer cno; // 댓글 번호
 	private Integer bno; // 게시글 번호
