@@ -1,5 +1,7 @@
 package net.kanozo.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -30,6 +32,7 @@ import net.kanozo.domain.UploadResponse;
 import net.kanozo.domain.UserVO;
 import net.kanozo.service.BoardService;
 import net.kanozo.service.CommentService;
+import net.kanozo.service.FileUploadService;
 import net.kanozo.service.UserService;
 import net.kanozo.util.FileUtil;
 import net.kanozo.util.MediaUtil;
@@ -50,16 +53,19 @@ public class BoardController {
 	@Autowired
 	private CommentService cService;
 
+	@Autowired
+	FileUploadService fileUploadService;
+
 	@RequestMapping(value = "write", method = RequestMethod.GET)
 	public String viewWritePage(Model model) {
 		model.addAttribute("boardVO", new BoardVO());
-		return "board/write";
+		return "board/write.page";
 	}
 
 	@RequestMapping(value = "write{id}", method = RequestMethod.GET)
 	public String viewWritePage2(Model model, @PathVariable String id) {
 		model.addAttribute("boardVO", new BoardVO());
-		return "board/write" + id;
+		return "board/write" + id + ".page";
 	}
 
 	@RequestMapping(value = "upload", method = RequestMethod.POST)
@@ -94,10 +100,8 @@ public class BoardController {
 
 	@RequestMapping(value = "write", method = RequestMethod.POST)
 	public String writeProcess(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
-			HttpServletRequest req) {
+			HttpServletRequest req, @RequestParam("file") MultipartFile multi) {
 		
-		
-		System.out.println(board);
 		// 올바른 값인지 벨리데이팅
 		new BoardValidator().validate(board, errors);
 		if (errors.hasErrors()) {
@@ -110,7 +114,7 @@ public class BoardController {
 			BoardVO data = service.viewArticle(board.getId());
 			if (data == null || !user.getUserid().equals(data.getWriter())) {
 				rttr.addFlashAttribute("msg", "권한이 없습니다.");
-				return "redirect:/board/list";
+				return "redirect:/board/list.page";
 			}
 		}
 
@@ -127,35 +131,47 @@ public class BoardController {
 			service.updateArticle(board);
 		} else {
 			// 글 작성
+			
+			String file = multi.getOriginalFilename();
+			
+			try {
+				File destinationFile = new File("C:/upload/" + file);
+				destinationFile.getParentFile().mkdir();
+				multi.transferTo(destinationFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			board.setFileName(file);
+			
 			service.writeArticle(board);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 			session.setAttribute("user", user);
 		}
 
-		return "redirect:/board/list";
+		return "redirect:/board/list.page";
 	}
 
 	@RequestMapping(value = "write{id}", method = RequestMethod.POST)
 	public String writeProcess2(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
 			HttpServletRequest req, @PathVariable String id, Model model) {
-		
+
 		if (id.equals("2")) {
-	
+
 			// 올바른 값인지 벨리데이팅
 			new BoardValidator().validate(board, errors);
 			if (errors.hasErrors()) {
-				return "board/write2"; // 에러가 존재하면 글쓰기 페이지로 보냄.
+				return "board/write2.page"; // 에러가 존재하면 글쓰기 페이지로 보냄.
 			}
 			// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
 			UserVO user = (UserVO) session.getAttribute("user");
-			
+
 			if (board.getId() != null) {
 				BoardVO data = service.viewArticle2(board.getId());
-				System.out.println(data);
-				System.out.println(user);
+
 				if (data == null || !user.getUserid().equals(data.getWriter())) {
 					rttr.addFlashAttribute("msg", "권한이 없습니다.");
-					return "redirect:/board/list2";
+					return "redirect:/board/list2.page";
 				}
 			}
 
@@ -171,19 +187,20 @@ public class BoardController {
 				service.updateArticle2(board);
 			} else {
 				// 글 작성
-				board.setB_type("bd2");;
+				board.setB_type("bd2");
+				;
 				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 				session.setAttribute("user", user);
 			}
 
-			return "redirect:/board/list2";
-			
+			return "redirect:/board/list2.page";
+
 		} else if (id.equals("3")) {
 			board.setB_type("bd3");
 			// 올바른 값인지 벨리데이팅
 			new BoardValidator().validate(board, errors);
 			if (errors.hasErrors()) {
-				return "board/write3"; // 에러가 존재하면 글쓰기 페이지로 보냄.
+				return "board/write3.page"; // 에러가 존재하면 글쓰기 페이지로 보냄.
 			}
 			// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
 			UserVO user = (UserVO) session.getAttribute("user");
@@ -192,7 +209,7 @@ public class BoardController {
 				BoardVO data = service.viewArticle2(board.getId());
 				if (data == null || !user.getUserid().equals(data.getWriter())) {
 					rttr.addFlashAttribute("msg", "권한이 없습니다.");
-					return "redirect:/board/list3";
+					return "redirect:/board/list3.page";
 				}
 			}
 
@@ -214,7 +231,7 @@ public class BoardController {
 				session.setAttribute("user", user);
 			}
 
-			return "redirect:/board/list3";
+			return "redirect:/board/list3.page";
 		}
 		return "redirect:/";
 	}
@@ -229,7 +246,7 @@ public class BoardController {
 		model.addAttribute("user", user);
 		model.addAttribute("list", list);
 
-		return "board/view";
+		return "board/view.page";
 	}
 
 	@RequestMapping(value = "view2/{id}", method = RequestMethod.GET)
@@ -242,19 +259,18 @@ public class BoardController {
 		model.addAttribute("user", user);
 		model.addAttribute("list", list);
 
-		return "board/view";
+		return "board/view.page";
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String viewList(Criteria criteria, Model model, HttpServletRequest req) {
 		List<BoardVO> list = service.getArticleList(criteria);
-		System.out.println("!!!!"+criteria.toString());
 		model.addAttribute("list", list);
 
 		Integer cnt = service.countArticle(criteria);
 		criteria.calculate(cnt);
 
-		return "board/list";
+		return "board/list.page";
 
 	}
 
@@ -266,8 +282,8 @@ public class BoardController {
 			model.addAttribute("list", list);
 			Integer cnt = service.countArticle2(criteria);
 			criteria.calculate(cnt);
-			
-			return "board/list2";
+
+			return "board/list2.page";
 
 		} else if (boardPage.equals("list3")) {
 			criteria.setB_type("bd3");
@@ -276,7 +292,7 @@ public class BoardController {
 			Integer cnt = service.countArticle2(criteria);
 			criteria.calculate(cnt);
 
-			return "board/list3";
+			return "board/list3.page";
 		}
 		return "redirect:/";
 	}
@@ -297,7 +313,7 @@ public class BoardController {
 		user = userService.appExp(user.getUserid(), ExpData.SMALL); // 글을 한번 쓸 때마다 2의 exp를 지급
 		session.setAttribute("user", user);
 
-		return "redirect:/board/view/" + bno + criteria.getQuery(criteria.getPage());
+		return "redirect:/board/view/" + bno + criteria.getQuery(criteria.getPage()) + ".page";
 	}
 
 	@RequestMapping(value = "write/{id}", method = RequestMethod.GET)
@@ -309,11 +325,11 @@ public class BoardController {
 
 		if (data == null || !data.getWriter().equals(user.getUserid())) {
 			rttr.addFlashAttribute("msg", "수정할 권한이 없습니다.");
-			return "redirect:/board/list";
+			return "redirect:/board/list.page";
 		}
 
 		model.addAttribute("boardVO", data);
-		return "board/write";
+		return "board/write.page";
 	}
 
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
@@ -323,10 +339,10 @@ public class BoardController {
 
 		if (!user.getUserid().equals(data.getWriter())) {
 			rttr.addFlashAttribute("msg", "삭제 권한이 없습니다.");
-			return "redirect:/board/view/" + data.getId();
+			return "redirect:/board/view/" + data.getId() + ".page";
 		}
 		service.deleteArticle(id);
 		rttr.addFlashAttribute("msg", "성공적으로 삭제되었습니다.");
-		return "redirect:/board/list";
+		return "redirect:/board/list.page";
 	}
 }

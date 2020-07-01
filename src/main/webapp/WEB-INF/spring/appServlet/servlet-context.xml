@@ -17,12 +17,31 @@
 	<beans:bean
 		class="net.kanozo.exception.CommonExceptionHandler">
 	</beans:bean>
+	
+	<!-- Tiles -->
+	<beans:bean id="tielsViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<beans:property name="order" value="1" />
+	</beans:bean>
+
+	<!-- Tiles 설정 파일 -->
+	<beans:bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
 
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix"
 			value="/WEB-INF/template/" />
 		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="2" />
 	</beans:bean>
 
 	<!-- Controller, Repositorty, Service 등을 검색할 패키지 -->

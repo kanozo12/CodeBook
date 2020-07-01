@@ -13,6 +13,16 @@ public class BoardVO {
 
 	private String b_type;
 
+	private String fileName;
+
+	public final String getFileName() {
+		return fileName;
+	}
+
+	public final void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	public final String getB_type() {
 		return b_type;
 	}

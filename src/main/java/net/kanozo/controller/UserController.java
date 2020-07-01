@@ -43,14 +43,14 @@ public class UserController {
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public String viewRegisterPage(Model model) {
 		model.addAttribute("registerDTO", new RegisterDTO());
-		return "user/registerPage";
+		return "user/registerPage.page";
 	}
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String userRegist(RegisterDTO dto, Errors errors) throws Exception {
 		validator.validate(dto, errors);
 		if (errors.hasErrors()) {
-			return "user/registerPage";
+			return "user/registerPage.page";
 		}
 
 		String uploadPath = context.getRealPath("/WEB-INF/upload");
@@ -75,12 +75,12 @@ public class UserController {
 		
 		if (loginDTO.getUserid() == "" || loginDTO.getPassword() == "") {
 			model.addAttribute("msg", msg);
-			return "user/login";
+			return "user/login.page";
 		}
 		UserVO user = service.login(loginDTO.getUserid(), loginDTO.getPassword());
 		if (user == null) {
 			model.addAttribute("msg", msg);
-			return "user/login";
+			return "user/login.page";
 		}
 
 		session.setAttribute("user", user);
@@ -91,7 +91,7 @@ public class UserController {
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String viewLoginPage(Model model) {
 		model.addAttribute("loginDTO", new LoginDTO());
-		return "user/login";
+		return "user/login.page";
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
@@ -103,7 +103,7 @@ public class UserController {
 	@RequestMapping(value = "info", method = RequestMethod.GET)
 	public String openProfile(HttpSession session, Model model) {
 
-		return "user/info";
+		return "user/info.page";
 	}
 
 	@RequestMapping(value = { "profile", "profile/{file:.+}" }, method = RequestMethod.GET)

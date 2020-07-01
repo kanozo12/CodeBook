@@ -12,8 +12,8 @@
 	
 	<insert id="write">
 		INSERT 
-			INTO SPRING_BOARDS (ID, TITLE, CONTENT, WRITER, WRITEDATE)
-		VALUES (AUTO_INCREMENT.NEXTVAL, #{title}, #{content}, #{writer}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'))
+			INTO SPRING_BOARDS (ID, TITLE, CONTENT, WRITER, WRITEDATE, fileName)
+		VALUES (AUTO_INCREMENT.NEXTVAL, #{title}, #{content}, #{writer}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'), #{fileName})
 	</insert>
 	<select id="list" resultType="BoardVO">
 		SELECT ID, TITLE, CONTENT, WRITER, WRITEDATE 
