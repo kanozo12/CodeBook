@@ -23,4 +23,19 @@ public interface BoardService {
 
 	// 글 갯수 가져오기
 	public Integer countArticle(Criteria cri);
+
+	// 글쓰기
+	public void writeArticle2(BoardVO board);
+
+	// 글보기
+	public BoardVO viewArticle2(Integer id);
+
+	// 글 수정하기
+	public void updateArticle2(BoardVO board);
+
+	// 글 리스트 보기
+	public List<BoardVO> getArticleList2(Criteria cri);
+
+	// 글 갯수 가져오기
+	public Integer countArticle2(Criteria cri);
 }

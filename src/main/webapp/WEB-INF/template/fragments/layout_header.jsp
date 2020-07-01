@@ -21,7 +21,10 @@
 					<a class="nav-link" href="/board/list">CodeBook</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/free/list">FreeBoard</a>
+					<a class="nav-link" href="/board/list2">FreeBoard</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/board/list3">Notice</a>
 				</li>
 			</ul>
 			
@@ -46,10 +49,10 @@
 	</nav>
 	
 	
-	<c:if test="${not empty model.msg }">
+	<c:if test="${not empty msg }">
 		<div class="alert alert-warning alert-dismissible fade show" role="alert">
 			<strong>알림!</strong>
-			<span>${model.msg}</span>
+			<span>${msg}</span>
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>

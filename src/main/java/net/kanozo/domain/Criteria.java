@@ -12,6 +12,8 @@ public class Criteria {
 	private Integer end;
 	private Integer totalPage;
 
+	private String b_type;
+
 	// 생성자
 	public Criteria() {
 		page = 1;
@@ -125,6 +127,21 @@ public class Criteria {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public String getB_type() {
+		return b_type;
+	}
+
+	public void setB_type(String b_type) {
+		this.b_type = b_type;
+	}
+
+	@Override
+	public String toString() {
+		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + ", perChapterNum=" + perChapterNum
+				+ ", keyword=" + keyword + ", prev=" + prev + ", next=" + next + ", start=" + start + ", end=" + end
+				+ ", totalPage=" + totalPage + ", b_type=" + b_type + "]";
 	}
 
 }

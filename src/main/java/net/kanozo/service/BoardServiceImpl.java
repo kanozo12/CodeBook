@@ -38,4 +38,27 @@ public class BoardServiceImpl implements BoardService {
 	public Integer countArticle(Criteria cri) {
 		return dao.getCnt(cri);
 	}
+	
+	public void updateArticle2(BoardVO board) {
+		dao.update2(board);
+	}
+	
+	@Override
+	public List<BoardVO> getArticleList2(Criteria cri) {
+		return dao.list2(cri);
+	}
+
+	@Override
+	public Integer countArticle2(Criteria cri) {
+		return dao.getCnt2(cri);
+	}
+
+	@Override
+	public void writeArticle2(BoardVO board) {
+		dao.write2(board);
+	}
+	@Override
+	public BoardVO viewArticle2(Integer id) {
+		return dao.view2(id);
+	}
 }

@@ -17,9 +17,11 @@
 	<beans:bean
 		class="net.kanozo.exception.CommonExceptionHandler">
 	</beans:bean>
-	
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/template/" />
+
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix"
+			value="/WEB-INF/template/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
@@ -33,31 +35,35 @@
 	<!-- 파일 업로드와 멀티파티 데이터 리졸버 빈 등록 -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10485760"/>
+		<beans:property name="maxUploadSize" value="10485760" />
 	</beans:bean>
-	
+
 	<!-- 인터셉터 등록과 맵핑 -->
-	<beans:bean id="authInterceptor" class="net.kanozo.interceptor.AuthInterceptor"/>
-	<beans:bean id="nonAuthInterceptor" class="net.kanozo.interceptor.NonAuthInterceptor"/>
-	
+	<beans:bean id="authInterceptor"
+		class="net.kanozo.interceptor.AuthInterceptor" />
+	<beans:bean id="nonAuthInterceptor"
+		class="net.kanozo.interceptor.NonAuthInterceptor" />
+
 	<interceptors>
 		<interceptor>
-			<mapping path="/user/register"/>
-			<mapping path="/user/login"/>
-			<beans:ref bean="nonAuthInterceptor"/>
+			<mapping path="/user/register" />
+			<mapping path="/user/login" />
+			<beans:ref bean="nonAuthInterceptor" />
 		</interceptor>
 		<interceptor>
-			
-			<mapping path="/user/logout"/>
-			<mapping path="/user/profile"/>
-			<mapping path="/board/write"/>
-			<mapping path="/board/write/*"/>
-			<mapping path="/board/delete/*"/>
-			<mapping path="/user/info"/>
-			<mapping path="/user/replyInsert"/>
-			<mapping path="/com/*"/>
-			<beans:ref bean="authInterceptor"/>
+
+			<mapping path="/user/logout" />
+			<mapping path="/user/profile" />
+			<mapping path="/board/write" />
+			<mapping path="/board/write/*" />
+			<mapping path="/board/write2" />
+			<mapping path="/board/write2/*" />
+			<mapping path="/board/delete/*" />
+			<mapping path="/user/info" />
+			<mapping path="/user/replyInsert" />
+			<mapping path="/com/*" />
+			<beans:ref bean="authInterceptor" />
 		</interceptor>
 	</interceptors>
-	
+
 </beans:beans>

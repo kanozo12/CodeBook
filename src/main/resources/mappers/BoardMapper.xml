@@ -57,5 +57,48 @@
 			1=1
 		<include refid="search"></include>
 	</select>
+	
+	<insert id="write2">
+		INSERT 
+			INTO SPRING_BOARDS2 (ID, TITLE, CONTENT, WRITER, WRITEDATE, B_TYPE)
+		VALUES (AUTO_INCREMENT2.NEXTVAL, #{title}, #{content}, #{writer}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'), #{b_type})
+	</insert>
+	
+	<select id="list2" resultType="BoardVO">
+		SELECT ID, TITLE, CONTENT, WRITER, WRITEDATE, B_TYPE
+		FROM 
+		(
+			SELECT ROW_NUMBER() OVER(ORDER BY ID DESC) NO, ID, TITLE, CONTENT, WRITER, WRITEDATE, B_TYPE
+			FROM 
+				SPRING_BOARDS2 
+			WHERE 
+				1=1
+			AND 
+				B_TYPE = #{b_type} 
+			<include refid="search"></include>
+		) 
+		WHERE 
+			NO  <![CDATA[>]]> #{pageStart} AND NO <![CDATA[<=]]> #{pageStart} <![CDATA[+]]> #{perPageNum} 
+
+	</select>
+	
+	<select id="cnt2" resultType="Integer">
+		SELECT COUNT(*) 
+		FROM 
+			SPRING_BOARDS2 
+		WHERE 
+			1=1
+		AND 
+			B_TYPE = #{b_type} 
+		<include refid="search"></include>
+	</select>
+	
+	<select id="view2" resultType="BoardVO">
+		SELECT B.*, U.NAME, U.IMG, U.U_LEVEL 
+		FROM 
+			SPRING_BOARDS2 B, SPRING_USERS U 
+		WHERE 
+			ID = #{id} AND U.USERID = B.WRITER
+	</select>
 </mapper>
  

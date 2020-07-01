@@ -47,4 +47,29 @@ public class BoardDAOImpl implements BoardDAO {
 		return session.selectOne(namespace + ".cnt", cri);
 	}
 
+	@Override
+	public void write2(BoardVO data) {
+		session.insert(namespace + ".write2", data);
+	}
+
+	@Override
+	public void update2(BoardVO data) {
+		session.update(namespace + ".update2", data);
+	}
+	
+	@Override
+	public List<BoardVO> list2(Criteria cri) {
+		return session.selectList(namespace + ".list2", cri);
+	}
+
+	@Override
+	public Integer getCnt2(Criteria cri) {
+		return session.selectOne(namespace + ".cnt2", cri);
+	}
+	
+	@Override
+	public BoardVO view2(Integer id) {
+		return session.selectOne(namespace + ".view2", id);
+	}
+
 }

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
@@ -56,7 +57,6 @@ public class UserController {
 		MultipartFile file = dto.getProfileImg();
 		String upFile = FileUtil.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
 
-		// System.out.println(uploadPath + "에 " + upFile + "로 업로드 됨.");
 
 		UserVO user = new UserVO();
 		user.setImg(upFile);
@@ -70,13 +70,13 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String userLogin(LoginDTO loginDTO, HttpSession session, Model model) {
+	public String userLogin(LoginDTO loginDTO, HttpSession session, Model model, HttpServletRequest req) {
 		String msg = "로그인 실패, 아이디와 비밀번호를 확인하세요.";
+		
 		if (loginDTO.getUserid() == "" || loginDTO.getPassword() == "") {
 			model.addAttribute("msg", msg);
 			return "user/login";
 		}
-
 		UserVO user = service.login(loginDTO.getUserid(), loginDTO.getPassword());
 		if (user == null) {
 			model.addAttribute("msg", msg);
@@ -85,8 +85,6 @@ public class UserController {
 
 		session.setAttribute("user", user);
 		
-		System.out.println("login...ok");
-		System.out.println(user);
 		return "redirect:/"; // 로그인 성공시 메인페이지로 리다이렉트\
 	}
 

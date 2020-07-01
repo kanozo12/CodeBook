@@ -56,6 +56,12 @@ public class BoardController {
 		return "board/write";
 	}
 
+	@RequestMapping(value = "write{id}", method = RequestMethod.GET)
+	public String viewWritePage2(Model model, @PathVariable String id) {
+		model.addAttribute("boardVO", new BoardVO());
+		return "board/write" + id;
+	}
+
 	@RequestMapping(value = "upload", method = RequestMethod.POST)
 	@ResponseBody
 	public UploadResponse handleImageUpload(@RequestParam("file") MultipartFile file, HttpServletRequest req,
@@ -89,7 +95,9 @@ public class BoardController {
 	@RequestMapping(value = "write", method = RequestMethod.POST)
 	public String writeProcess(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
 			HttpServletRequest req) {
-
+		
+		
+		System.out.println(board);
 		// 올바른 값인지 벨리데이팅
 		new BoardValidator().validate(board, errors);
 		if (errors.hasErrors()) {
@@ -121,11 +129,94 @@ public class BoardController {
 			// 글 작성
 			service.writeArticle(board);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
-			System.out.println(user.getU_exp());
 			session.setAttribute("user", user);
 		}
 
 		return "redirect:/board/list";
+	}
+
+	@RequestMapping(value = "write{id}", method = RequestMethod.POST)
+	public String writeProcess2(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
+			HttpServletRequest req, @PathVariable String id, Model model) {
+		
+		if (id.equals("2")) {
+	
+			// 올바른 값인지 벨리데이팅
+			new BoardValidator().validate(board, errors);
+			if (errors.hasErrors()) {
+				return "board/write2"; // 에러가 존재하면 글쓰기 페이지로 보냄.
+			}
+			// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
+			UserVO user = (UserVO) session.getAttribute("user");
+			
+			if (board.getId() != null) {
+				BoardVO data = service.viewArticle2(board.getId());
+				System.out.println(data);
+				System.out.println(user);
+				if (data == null || !user.getUserid().equals(data.getWriter())) {
+					rttr.addFlashAttribute("msg", "권한이 없습니다.");
+					return "redirect:/board/list2";
+				}
+			}
+
+			// 로그인한 사용자의 아이디를 글쓴이로 등록하고
+			board.setWriter(user.getUserid());
+
+			LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
+			String clean = filter.doFilter(board.getContent());
+			board.setContent(clean);
+			// 실제 DB에 글을 기록함.
+			if (board.getId() != null) {
+				// 글 수정
+				service.updateArticle2(board);
+			} else {
+				// 글 작성
+				board.setB_type("bd2");;
+				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
+				session.setAttribute("user", user);
+			}
+
+			return "redirect:/board/list2";
+			
+		} else if (id.equals("3")) {
+			board.setB_type("bd3");
+			// 올바른 값인지 벨리데이팅
+			new BoardValidator().validate(board, errors);
+			if (errors.hasErrors()) {
+				return "board/write3"; // 에러가 존재하면 글쓰기 페이지로 보냄.
+			}
+			// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
+			UserVO user = (UserVO) session.getAttribute("user");
+
+			if (board.getId() != null) {
+				BoardVO data = service.viewArticle2(board.getId());
+				if (data == null || !user.getUserid().equals(data.getWriter())) {
+					rttr.addFlashAttribute("msg", "권한이 없습니다.");
+					return "redirect:/board/list3";
+				}
+			}
+
+			// 로그인한 사용자의 아이디를 글쓴이로 등록하고
+			board.setWriter(user.getUserid());
+
+			LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
+			String clean = filter.doFilter(board.getContent());
+			board.setContent(clean);
+
+			// 실제 DB에 글을 기록함.
+			if (board.getId() != null) {
+				// 글 수정
+				service.updateArticle2(board);
+			} else {
+				// 글 작성
+				service.writeArticle2(board);
+				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
+				session.setAttribute("user", user);
+			}
+
+			return "redirect:/board/list3";
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
@@ -141,10 +232,23 @@ public class BoardController {
 		return "board/view";
 	}
 
+	@RequestMapping(value = "view2/{id}", method = RequestMethod.GET)
+	public String viewArticle2(@PathVariable Integer id, Model model, Criteria cri, HttpSession session,
+			Criteria criteria) {
+		BoardVO board = service.viewArticle2(id);
+		UserVO user = (UserVO) session.getAttribute("user");
+		List<ComVO> list = cService.list(id);
+		model.addAttribute("board", board);
+		model.addAttribute("user", user);
+		model.addAttribute("list", list);
+
+		return "board/view";
+	}
+
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String viewList(Criteria criteria, Model model, HttpServletRequest req) {
-		System.out.println("board");
 		List<BoardVO> list = service.getArticleList(criteria);
+		System.out.println("!!!!"+criteria.toString());
 		model.addAttribute("list", list);
 
 		Integer cnt = service.countArticle(criteria);
@@ -152,6 +256,29 @@ public class BoardController {
 
 		return "board/list";
 
+	}
+
+	@RequestMapping(value = "{boardPage}", method = RequestMethod.GET)
+	public String viewList2(Criteria criteria, Model model, HttpServletRequest req, @PathVariable String boardPage) {
+		if (boardPage.equals("list2")) {
+			criteria.setB_type("bd2");
+			List<BoardVO> list = service.getArticleList2(criteria);
+			model.addAttribute("list", list);
+			Integer cnt = service.countArticle2(criteria);
+			criteria.calculate(cnt);
+			
+			return "board/list2";
+
+		} else if (boardPage.equals("list3")) {
+			criteria.setB_type("bd3");
+			List<BoardVO> list = service.getArticleList2(criteria);
+			model.addAttribute("list", list);
+			Integer cnt = service.countArticle2(criteria);
+			criteria.calculate(cnt);
+
+			return "board/list3";
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/replyInsert", method = RequestMethod.POST)
