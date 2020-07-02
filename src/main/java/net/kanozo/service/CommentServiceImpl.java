@@ -23,7 +23,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void insert(ComVO vo) {
 		comDAO.insert(vo);
-		System.out.println("ASdasdasdasd");
 	}
 
 	// 댓글 수정

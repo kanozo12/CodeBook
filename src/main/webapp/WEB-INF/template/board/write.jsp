@@ -13,7 +13,7 @@
                 <c:if test="${not empty boardVO.id}">
                     <h2>글 수정</h2>
                 </c:if>
-
+				
                 <form method="post" action="/board/write" enctype="multipart/form-data">
                     <!-- <input type="hidden" th:field="*{id}" /> -->
                     <div class="form-group">
@@ -28,7 +28,7 @@
                     </div>
                     
                     <div class="form-group">
-                    	<input type="file" name="file">
+                    	<input type="file" name="file" multiple="multiple">
                     </div>
 
                     <button type="submit" class="btn btn-primary">글작성</button>

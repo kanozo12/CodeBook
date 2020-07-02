@@ -33,8 +33,8 @@ public class FileUploadService {
 			System.out.println("size : " + size);
 			System.out.println("saveFileName : " + saveFileName);
 			
-			writeFile(multipartFile, saveFileName);
-			url = PREFIX_URL + saveFileName;
+			writeFile(multipartFile, originFilename);
+			url = PREFIX_URL + originFilename;
 		}
 		catch (IOException e) {
 			// 원래라면 RuntimeException 을 상속받은 예외가 처리되어야 하지만

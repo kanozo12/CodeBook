@@ -26,15 +26,13 @@
                 <div class="card">
                     <div class="card-body">${board.content}</div>
                 </div>
-                
                 <c:if test="${not empty board.fileName}">
-                	<a href="/upload/${board.fileName}">${board.fileName}</a>
+                	<a href="${pageContext.request.contextPath}/upload/${board.fileName}" download>${board.fileName}</a>
                 </c:if>
-       			
             </div>
         </div>
+        
         <div class="row mt-3 mb-5">
-        	
             <div class="col-10 offset-1 text-right">
                 <c:if test="${sessionScope.user != null and sessionScope.user.userid == board.writer}">
                     <a href="/board/write/${board.id}" class="btn btn-success">수정</a>
@@ -54,17 +52,15 @@
                     <div class="col">
                         <h5 class="card-title">${list.comContent}</h5>
                         <p class="card-text">
-                            <span class="badge badge-primary">${board.name} (
-                                ${board.writer} )</span> <span class="badge badge-secondary">LV.[
-                                ${board.u_level} ]</span>
+                            <span class="badge badge-primary">${board.name} ( ${board.writer} )</span> 
+                            <span class="badge badge-secondary">LV.[ ${board.u_level} ]</span>
                             <fmt:parseDate value="${board.writeDate}" var="writeDate" pattern="yyyy-MM-dd" />
-                            <span class="badge badge-warning">작성일:
-                                <fmt:formatDate value="${writeDate}" pattern="yyyy-MM-dd" /></span>
-
+                            <span class="badge badge-warning">작성일: <fmt:formatDate value="${writeDate}" pattern="yyyy-MM-dd" /></span>
                         </p>
                     </div>
                 </div>
             </div>
+            
         </c:forEach>
 
         <c:if test="${sessionScope.user != null}">
@@ -77,14 +73,11 @@
                         </div>
                         <div class="ml-3 form-group">
                             <form method="post" action="/board/replyInsert" name="commentInsertForm">
-
-                                <input type="hidden" name="bno" value="${board.id}" /> <input type="hidden"
-                                    name="comWriter" value="${user.userid}" /> <input type="hidden" name="userName"
-                                    value="${user.name}" />
-                                <textarea class="form-control" rows="3" cols="10" name="comContent"
-                                    id="comContent"></textarea>
+                                <input type="hidden" name="bno" value="${board.id}" /> 
+                                <input type="hidden" name="comWriter" value="${user.userid}" /> 
+                                <input type="hidden" name="userName" value="${user.name}" />
+                                <textarea class="form-control" rows="3" cols="10" name="comContent" id="comContent"></textarea>
                                 <button class="mt-3 btn btn-primary" type="submit" name="commentInsertBtn">등록</button>
-
                             </form>
                         </div>
                     </div>
@@ -93,4 +86,4 @@
             </div>
         </c:if>
     </div>
-</body>
+</body> 

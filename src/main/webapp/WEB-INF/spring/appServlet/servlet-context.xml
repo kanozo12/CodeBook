@@ -18,6 +18,9 @@
 		class="net.kanozo.exception.CommonExceptionHandler">
 	</beans:bean>
 	
+	<resources location="/resources/" mapping="/resources/**" />
+	<resources location="C:/upload" mapping="/upload/**" />
+	
 	<!-- Tiles -->
 	<beans:bean id="tielsViewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">

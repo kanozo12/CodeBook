@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nhncorp.lucy.security.xss.LucyXssFilter;
@@ -100,8 +101,8 @@ public class BoardController {
 
 	@RequestMapping(value = "write", method = RequestMethod.POST)
 	public String writeProcess(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
-			HttpServletRequest req, @RequestParam("file") MultipartFile multi) {
-		
+			HttpServletRequest req, MultipartHttpServletRequest mtf) {
+
 		// 올바른 값인지 벨리데이팅
 		new BoardValidator().validate(board, errors);
 		if (errors.hasErrors()) {
@@ -112,6 +113,7 @@ public class BoardController {
 
 		if (board.getId() != null) {
 			BoardVO data = service.viewArticle(board.getId());
+			System.out.println(data + "\n" + user);
 			if (data == null || !user.getUserid().equals(data.getWriter())) {
 				rttr.addFlashAttribute("msg", "권한이 없습니다.");
 				return "redirect:/board/list.page";
@@ -131,19 +133,27 @@ public class BoardController {
 			service.updateArticle(board);
 		} else {
 			// 글 작성
-			
-			String file = multi.getOriginalFilename();
-			
-			try {
-				File destinationFile = new File("C:/upload/" + file);
-				destinationFile.getParentFile().mkdir();
-				multi.transferTo(destinationFile);
-			} catch (Exception e) {
-				e.printStackTrace();
+			List<MultipartFile> fileList = mtf.getFiles("file");
+			String originFileName = null;
+
+			for (MultipartFile mf : fileList) {
+				originFileName = mf.getOriginalFilename();
+
+				String saveFile = System.currentTimeMillis() + originFileName;
+
+				try {
+					mf.transferTo(new File(saveFile));
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				board.setFileName(saveFile);
 			}
+
 			
-			board.setFileName(file);
-			
+
 			service.writeArticle(board);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 			session.setAttribute("user", user);
@@ -168,10 +178,10 @@ public class BoardController {
 
 			if (board.getId() != null) {
 				BoardVO data = service.viewArticle2(board.getId());
-
+				System.out.println(data + "\n" + user);
 				if (data == null || !user.getUserid().equals(data.getWriter())) {
 					rttr.addFlashAttribute("msg", "권한이 없습니다.");
-					return "redirect:/board/list2.page";
+					return "redirect:/board/list2";
 				}
 			}
 
@@ -181,22 +191,23 @@ public class BoardController {
 			LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
 			String clean = filter.doFilter(board.getContent());
 			board.setContent(clean);
+
 			// 실제 DB에 글을 기록함.
 			if (board.getId() != null) {
 				// 글 수정
-				service.updateArticle2(board);
+				board.setB_type("bd3");
+				service.updateArticle(board);
 			} else {
 				// 글 작성
-				board.setB_type("bd2");
-				;
+				board.setB_type("bd3");
+				service.writeArticle2(board);
 				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 				session.setAttribute("user", user);
 			}
 
-			return "redirect:/board/list2.page";
+			return "redirect:/board/list2";
 
 		} else if (id.equals("3")) {
-			board.setB_type("bd3");
 			// 올바른 값인지 벨리데이팅
 			new BoardValidator().validate(board, errors);
 			if (errors.hasErrors()) {
@@ -226,6 +237,7 @@ public class BoardController {
 				service.updateArticle2(board);
 			} else {
 				// 글 작성
+				board.setB_type("bd3");
 				service.writeArticle2(board);
 				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 				session.setAttribute("user", user);
