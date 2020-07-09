@@ -99,11 +99,7 @@ public class BoardVO {
 	public String toString() {
 		return "BoardVO [id=" + id + ", title=" + title + ", content=" + content + ", writer=" + writer + ", writeDate="
 				+ writeDate + ", name=" + name + ", img=" + img + ", u_level=" + u_level + ", b_type=" + b_type
-				+ ", getB_type()=" + getB_type() + ", getId()=" + getId() + ", getTitle()=" + getTitle()
-				+ ", getContent()=" + getContent() + ", getWriter()=" + getWriter() + ", getWriteDate()="
-				+ getWriteDate() + ", getName()=" + getName() + ", getImg()=" + getImg() + ", getU_level()="
-				+ getU_level() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+				+ ", fileName=" + fileName + "]";
 	}
 
 }

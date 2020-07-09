@@ -1,7 +1,7 @@
 package net.kanozo.controller;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -100,6 +100,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "write", method = RequestMethod.POST)
+	@ResponseBody
 	public String writeProcess(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
 			HttpServletRequest req, MultipartHttpServletRequest mtf) {
 
@@ -133,33 +134,33 @@ public class BoardController {
 			service.updateArticle(board);
 		} else {
 			// 글 작성
-			List<MultipartFile> fileList = mtf.getFiles("file");
-			String originFileName = null;
+			Iterator<String> itr = mtf.getFileNames();
+			String filePath = "C:/upload"; // 설정파일로 뺀다.
 
-			for (MultipartFile mf : fileList) {
-				originFileName = mf.getOriginalFilename();
+			while (itr.hasNext()) { // 받은 파일들을 모두 돌린다.
+				MultipartFile mpf = mtf.getFile(itr.next());
 
-				String saveFile = System.currentTimeMillis() + originFileName;
+				String originalFilename = mpf.getOriginalFilename(); // 파일명
+				System.out.println("OriginFileName => " + originalFilename);
+				String fileFullPath = filePath + "/" + System.currentTimeMillis() + originalFilename; // 파일 전체 경로
+				String saveFile = System.currentTimeMillis() + originalFilename;
 
 				try {
-					mf.transferTo(new File(saveFile));
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
+					// 파일 저장
+					mpf.transferTo(new File(fileFullPath)); // 파일저장 실제로는 service에서 처리
+					board.setFileName(saveFile);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
-				board.setFileName(saveFile);
 			}
-
-			
-
+//			String saveFile = System.currentTimeMillis() + originFileName;
+//			board.setFileName(saveFile);
 			service.writeArticle(board);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 			session.setAttribute("user", user);
 		}
-
 		return "redirect:/board/list.page";
+
 	}
 
 	@RequestMapping(value = "write{id}", method = RequestMethod.POST)

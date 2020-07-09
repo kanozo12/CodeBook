@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <body>
+	<script src="/app/js/upload.js"></script>
+
     <div class="container">
         <div class="row">
             <div class="col-10 offset-1">
@@ -14,7 +16,7 @@
                     <h2>글 수정</h2>
                 </c:if>
 				
-                <form method="post" action="/board/write" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="uploadForm" name="uploadForm">
                     <!-- <input type="hidden" th:field="*{id}" /> -->
                     <div class="form-group">
                         <label for="title">글 제목</label> <input type="text" class="form-control" name="title" id="title"
@@ -28,10 +30,19 @@
                     </div>
                     
                     <div class="form-group">
-                    	<input type="file" name="file" multiple="multiple">
+                    	<table>
+		                	<tbody id="fileTableTbody">
+					        	<tr>
+					            	<td id="dropZone">
+					                  	파일을 드래그 하세요
+					                </td>
+					           	</tr>
+					      	</tbody>
+			            </table>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">글작성</button>
+                    <a href="javascript:uploadFile();" class="btn btn-primary">글쓰기</a>
+                   <button onclick="uploadFile();" class="btn btn-primary">글쓰기</button>
+                   
                 </form>
             </div>
         </div>
