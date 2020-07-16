@@ -28,21 +28,21 @@
                 </div>
                 <c:if test="${not empty board.fileName}">
                 	<a href="${pageContext.request.contextPath}/upload/${board.fileName}" download>${board.fileName}</a>
-                </c:if>
+                </c:if>  
             </div>
         </div>
         
         <div class="row mt-3 mb-5">
             <div class="col-10 offset-1 text-right">
                 <c:if test="${sessionScope.user != null and sessionScope.user.userid == board.writer}">
-                    <a href="/board/write/${board.id}" class="btn btn-success">수정</a>
-                    <a href="/board/delete/${board.id}" class="btn btn-danger">삭제</a>
+                    <a href="/notice/write/${board.id}" class="btn btn-success">수정</a>
+                    <a href="/notice/noticeDelete/${board.id}" class="btn btn-danger">삭제</a>
                 </c:if>
-                <a href="/board/list${criteria.getQuery(criteria.page)}" class="btn btn-primary">목록보기</a>
+                <a href="/notice/noticeList${criteria.getQuery(criteria.page)}" class="btn btn-primary">목록보기</a>
             </div>
         </div>
 
-        <c:forEach var="list" items="${list}">
+      <%--   <c:forEach var="list" items="${list}">
             <div class="col-10 offset-1">
                 <div class="row d-flex mb-2">
                     <!--   이미지 박스 -->
@@ -61,9 +61,9 @@
                 </div>
             </div>
             
-        </c:forEach>
+        </c:forEach> --%>
 
-    <%--     <c:if test="${sessionScope.user != null}">
+     <%--    <c:if test="${sessionScope.user != null}">
             <div class="row mt-3">
                 <div class="col-10 offset-1">
                     <div class="row d-flex mb-2">

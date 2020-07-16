@@ -26,7 +26,6 @@ import net.kanozo.domain.LoginDTO;
 import net.kanozo.domain.RegisterDTO;
 import net.kanozo.domain.UserVO;
 import net.kanozo.service.UserService;
-import net.kanozo.util.FileUtil;
 import net.kanozo.validator.RegisterValidator;
 
 @Controller
@@ -55,11 +54,11 @@ public class UserController {
 
 		String uploadPath = context.getRealPath("/WEB-INF/upload");
 		MultipartFile file = dto.getProfileImg();
-		String upFile = FileUtil.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+//		String upFile = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
 
 
 		UserVO user = new UserVO();
-		user.setImg(upFile);
+//		user.setImg(upFile);
 		user.setName(dto.getUsername());
 		user.setPassword(dto.getPassword());
 		user.setUserid(dto.getUserid());

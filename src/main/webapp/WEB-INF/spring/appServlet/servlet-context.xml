@@ -80,12 +80,17 @@
 			<mapping path="/board/write/*" />
 			<mapping path="/board/write2" />
 			<mapping path="/board/write2/*" />
+			<mapping path="/board/write/notice" />
+			<mapping path="/board/write/notice/*" />
 			<mapping path="/board/delete/*" />
+			<mapping path="/board/noticeDelete/*" />
 			<mapping path="/user/info" />
 			<mapping path="/user/replyInsert" />
 			<mapping path="/com/*" />
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 	</interceptors>
+	
+
 
 </beans:beans>

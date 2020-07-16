@@ -31,7 +31,7 @@
                     <c:forEach var="board" items="${list}">
                         <tr>
                             <td>${board.id}</td>
-                            <td><a href="/board/view2/${board.id}${criteria.getQuery(criteria.page)}">${board.title}</a>
+                            <td><a href="/notice/noticeView/${board.id}${criteria.getQuery(criteria.page)}">${board.title}</a>
                             </td>
                             <td>${board.writer}</td>
                             <td>${board.writeDate}</td>
@@ -42,7 +42,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-10 offset-1 text-right">
-                <a href="/board/write3" class="btn btn-primary">글작성</a>
+                <a href="/notice/write" class="btn btn-primary">글작성</a>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
             <ul class="pagination justify-content-center">
                 <c:if test="${criteria.prev}">
                     <li class="page-item">
-                        <a href="/board/list3${criteria.getQuery(criteria.start - 1)}" class="page-link"
+                        <a href="/notice/noticeList${criteria.getQuery(criteria.start - 1)}" class="page-link"
                             aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -61,13 +61,13 @@
 
                 <c:forEach var="i" begin="${criteria.start}" end="${criteria.end}" step="1">
                     <li class="page-item">
-                        <a href="/board/list3${criteria.getQuery(i)}" class="page-link">${i}</a>
+                        <a href="/notice/noticeList${criteria.getQuery(i)}" class="page-link">${i}</a>
                     </li>
                 </c:forEach>
 
                 <c:if test="${criteria.next}">
                     <li class="page-item">
-                        <a href="/board/list3${criteria.getQuery(criteria.end + 1)}" class="page-link"
+                        <a href="/notice/noticeList${criteria.getQuery(criteria.end + 1)}" class="page-link"
                             aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

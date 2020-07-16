@@ -24,7 +24,7 @@
 	                <a class="nav-link"a href="/board/list2">FreeBoard</a>
 	            </li>
 	            <li class="nav-item">
-	                <a class="nav-link" href="/board/list3">Notice</a>
+	                <a class="nav-link" href="/notice/noticeList">Notice</a>
 	            </li>
 	        </ul>
 	

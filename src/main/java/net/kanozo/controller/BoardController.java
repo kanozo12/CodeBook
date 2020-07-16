@@ -207,44 +207,6 @@ public class BoardController {
 			}
 
 			return "redirect:/board/list2";
-
-		} else if (id.equals("3")) {
-			// 올바른 값인지 벨리데이팅
-			new BoardValidator().validate(board, errors);
-			if (errors.hasErrors()) {
-				return "board/write3.page"; // 에러가 존재하면 글쓰기 페이지로 보냄.
-			}
-			// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
-			UserVO user = (UserVO) session.getAttribute("user");
-
-			if (board.getId() != null) {
-				BoardVO data = service.viewArticle2(board.getId());
-				if (data == null || !user.getUserid().equals(data.getWriter())) {
-					rttr.addFlashAttribute("msg", "권한이 없습니다.");
-					return "redirect:/board/list3.page";
-				}
-			}
-
-			// 로그인한 사용자의 아이디를 글쓴이로 등록하고
-			board.setWriter(user.getUserid());
-
-			LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
-			String clean = filter.doFilter(board.getContent());
-			board.setContent(clean);
-
-			// 실제 DB에 글을 기록함.
-			if (board.getId() != null) {
-				// 글 수정
-				service.updateArticle2(board);
-			} else {
-				// 글 작성
-				board.setB_type("bd3");
-				service.writeArticle2(board);
-				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
-				session.setAttribute("user", user);
-			}
-
-			return "redirect:/board/list3.page";
 		}
 		return "redirect:/";
 	}
