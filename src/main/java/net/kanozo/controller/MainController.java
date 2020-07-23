@@ -22,10 +22,11 @@ public class MainController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String indexPage(Model model, HttpServletRequest req) {
 
-		List<SampleListVO> list = (List<SampleListVO>) service.sampleList();
-		List<SampleFreeVO> free = (List<SampleFreeVO>) service.sampleFree();
-
+		List<SampleListVO> list =  service.sampleList();
+		List<SampleFreeVO> free =  service.sampleFree();
+		
 		System.out.println(free);
+		
 		model.addAttribute("list", list);
 		model.addAttribute("free", free);
 		return "index.page";

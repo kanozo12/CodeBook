@@ -125,7 +125,7 @@ public class WriteNoticeController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(noticeVO);
+
 			noticeService.writeArticle(noticeVO);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 			session.setAttribute("user", user);
@@ -172,7 +172,7 @@ public class WriteNoticeController {
 		rttr.addFlashAttribute("msg", "성공적으로 삭제되었습니다.");
 		return "redirect:/board/noticeList.page";
 	}
-	
+
 	private String saveFile(MultipartFile file) {
 		// 파일 이름 변경
 		UUID uuid = UUID.randomUUID();

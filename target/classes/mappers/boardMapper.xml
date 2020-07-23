@@ -102,11 +102,11 @@
 	</select>
 	
 	<select id="sampleList" resultType="SampleListVO">
-		SELECT CONTENT FROM NOTICE_TB_DATA ORDER BY ID
+		SELECT ID, CONTENT FROM NOTICE_TB_DATA ORDER BY ID
 	</select>
 	
 	<select id="sampleFree" resultType="SampleFreeVO">
-		SELECT CONTENT FROM SPRING_BOARDS2 ORDER BY ID
+		SELECT ID, CONTENT FROM SPRING_BOARDS2 ORDER BY ID
 	</select>
 </mapper>
  

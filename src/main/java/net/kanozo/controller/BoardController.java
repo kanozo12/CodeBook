@@ -111,7 +111,7 @@ public class BoardController {
 		}
 		// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
 		UserVO user = (UserVO) session.getAttribute("user");
-
+		System.out.println(board + "!!!!!!!!!!!!!!!");
 		if (board.getId() != null) {
 			BoardVO data = service.viewArticle(board.getId());
 			if (data == null || !user.getUserid().equals(data.getWriter())) {
@@ -140,7 +140,6 @@ public class BoardController {
 				MultipartFile mpf = mtf.getFile(itr.next());
 
 				String originalFilename = mpf.getOriginalFilename(); // 파일명
-				System.out.println("OriginFileName => " + originalFilename);
 				String fileFullPath = filePath + "/" + System.currentTimeMillis() + originalFilename; // 파일 전체 경로
 
 				String saveFile = originalFilename;
@@ -166,52 +165,48 @@ public class BoardController {
 
 	}
 
-	@RequestMapping(value = "write{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "write2", method = RequestMethod.POST)
 	public String writeProcess2(BoardVO board, HttpSession session, Errors errors, RedirectAttributes rttr,
-			HttpServletRequest req, @PathVariable String id, Model model) {
+			HttpServletRequest req, Model model) {
 
-		if (id.equals("2")) {
-
-			// 올바른 값인지 벨리데이팅
-			new BoardValidator().validate(board, errors);
-			if (errors.hasErrors()) {
-				return "board/write2.page"; // 에러가 존재하면 글쓰기 페이지로 보냄.
-			}
-			// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
-			UserVO user = (UserVO) session.getAttribute("user");
-
-			if (board.getId() != null) {
-				BoardVO data = service.viewArticle2(board.getId());
-
-				if (data == null || !user.getUserid().equals(data.getWriter())) {
-					rttr.addFlashAttribute("msg", "권한이 없습니다.");
-					return "redirect:/board/list2";
-				}
-			}
-
-			// 로그인한 사용자의 아이디를 글쓴이로 등록하고
-			board.setWriter(user.getUserid());
-
-			LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
-			String clean = filter.doFilter(board.getContent());
-			board.setContent(clean);
-
-			// 실제 DB에 글을 기록함.
-			if (board.getId() != null) {
-				// 글 수정
-				board.setB_type("bd3");
-				service.updateArticle(board);
-			} else {
-				// 글 작성
-				board.setB_type("bd3");
-				service.writeArticle2(board);
-				user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
-				session.setAttribute("user", user);
-			}
-
-			return "redirect:/board/list2";
+		// 올바른 값인지 벨리데이팅
+		new BoardValidator().validate(board, errors);
+		if (errors.hasErrors()) {
+			return "board/write"; // 에러가 존재하면 글쓰기 페이지로 보냄.
 		}
-		return "redirect:/";
+		// 여기는 인터셉터에 의해서 로그인하지 않은 사용자는 막히게 될 것이기 때문에 그냥 에러처리 없이 user를 불러써도 된다.
+		UserVO user = (UserVO) session.getAttribute("user");
+		System.out.println(board + "!!!!!!!!!!!!!!!");
+		if (board.getId() != null) {
+			BoardVO data = service.viewArticle(board.getId());
+			if (data == null || !user.getUserid().equals(data.getWriter())) {
+				rttr.addFlashAttribute("msg", "권한이 없습니다.");
+				return "redirect:/board/list.page";
+			}
+		}
+
+		// 로그인한 사용자의 아이디를 글쓴이로 등록하고
+		board.setWriter(user.getUserid());
+
+		LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
+		String clean = filter.doFilter(board.getContent());
+		board.setContent(clean);
+
+		// 실제 DB에 글을 기록함.
+		if (board.getId() != null) {
+			// 글 수정
+			board.setFileName(""); //아직 파일 업로드 구현 x
+			board.setB_type("bd2");
+			service.updateArticle2(board);
+		} else {
+			// 글 작성
+			board.setFileName(""); //아직 파일 업로드 구현 x
+			board.setB_type("bd2");
+			service.writeArticle2(board);
+			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
+			session.setAttribute("user", user);
+		}
+		return "redirect:/board/list2";
 	}
 
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
@@ -298,7 +293,7 @@ public class BoardController {
 	public String viewModPage(Model model, @PathVariable("id") Integer id, HttpSession session,
 			RedirectAttributes rttr) {
 
-		BoardVO data = service.viewArticle(id);
+		BoardVO data = service.viewArticle2(id);
 		UserVO user = (UserVO) session.getAttribute("user");
 
 		if (data == null || !data.getWriter().equals(user.getUserid())) {

@@ -20,7 +20,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 	@Override
 	public void write(NoticeVO noticeVO) {
-		session.insert(namespace + ".write", noticeVO);
+		session.insert(namespace + ".writeProcedure", noticeVO);
 	}
 
 	@Override

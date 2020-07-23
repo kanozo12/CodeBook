@@ -58,5 +58,14 @@
 		<include refid="search"></include>
 	</select>
 	
+	<!-- ****************** 글쓰기 프로시저 개발 ******************* -->
+	
+	<insert id="writeProcedure" statementType="CALLABLE">
+		{
+			call NOTICE_TB_DATA_PROC (AUTO_INCREMENT_NOTICE.NEXTVAL,  #{title}, #{content}, #{writer}, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS'), #{fileName})
+		}
+	</insert>
+	
+	<!-- ***************************************************** -->
 </mapper>
  

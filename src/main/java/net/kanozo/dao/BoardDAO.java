@@ -1,6 +1,7 @@
 package net.kanozo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
@@ -44,4 +45,12 @@ public interface BoardDAO {
 	public List<SampleListVO> sampleList();
 	
 	public List<SampleFreeVO> sampleFree();
+	
+	
+//***************** 글쓰기 프로시저 개발 중 *************************
+	
+	//HashMap을 이용
+//	public void mapProcedureList(Map map) throws Exception;
+
+//************************************************************
 }
