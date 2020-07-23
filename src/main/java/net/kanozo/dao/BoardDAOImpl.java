@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
+import net.kanozo.domain.SampleFreeVO;
+import net.kanozo.domain.SampleListVO;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -72,4 +74,13 @@ public class BoardDAOImpl implements BoardDAO {
 		return session.selectOne(namespace + ".view2", id);
 	}
 
+	@Override
+	public List<SampleListVO> sampleList() {
+		return session.selectList(namespace + ".sampleList"); 
+	}
+	
+	@Override
+	public List<SampleFreeVO> sampleFree() {
+		return session.selectList(namespace + ".sampleFree");
+	}
 }

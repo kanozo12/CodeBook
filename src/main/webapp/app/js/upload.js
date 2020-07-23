@@ -129,18 +129,17 @@
  
     // 파일 등록
     function uploadFile(){
-    	
         // 등록할 파일 리스트
         var uploadFileList = Object.keys(fileList);
 //        console.log(uploadFileList);
         console.log("uploadFileList .....ok");
-        // 파일이 있는지 체크
-        if(uploadFileList.length == 0){
-            // 파일등록 경고창
-            alert("파일이 없습니다.");
-            return;
-        }
-        
+//        // 파일이 있는지 체크
+//        if(uploadFileList.length == 0){
+//            // 파일등록 경고창
+//            alert("파일이 없습니다.");
+//            return;
+//        }
+//        
         // 용량을 500MB를 넘을 경우 업로드 불가
         if(totalFileSize > maxUploadSize){
             // 파일 사이즈 초과 경고창
@@ -177,6 +176,8 @@
                         alert("실패");
                     }
                 }
+            
             });
         }
+        
     }

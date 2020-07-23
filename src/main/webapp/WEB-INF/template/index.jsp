@@ -1,15 +1,156 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <body>
-	<div class="container">
-		<div class="jumbotron">
-			<h1 class="display-4">양영디지털고 CodeBook!</h1>
-			<p class="lead">코드북은 우리가 일상생활에서 코드를 작성하면서 부딛혔던 문제들과 해결책을 공유하기 위해
-				올리는 공간입니다.</p>
-			<hr class="my-4">
-			<p>내가 고생하며 해결했던 일은 언젠가 다른 프로그래머에게도 고통으로 다가옵니다. 이를 도와줄 수 있는 사이트!
-				Code Book입니다.</p>
-			<a class="btn btn-primary btn-lg" href="/board/list" role="button">보러가기</a>
+	<!-- Main Slide Section -->
+	<section id="slide">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<img src="/app/img/bg1.jpg">
+				</div>
+				<div class="swiper-slide">
+					<img src="/app/img/bg2.jpg">
+				</div>
+				<div class="swiper-slide">
+					<img src="/app/img/bg3.jpg">
+				</div>
+			</div>
+
+			<div class="swiper-pagination"></div>
 		</div>
-	</div>
+
+		<div class="main_title">
+			<div class="title">
+				<h2>Let's CodeBook</h2>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="swiper-container2">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample1.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample2.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample3.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample4.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample5.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample6.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample7.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample8.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample9.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="slide-item">
+							<div class="img">
+								<img src="img/sample10.jpg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+	<!-- Main Slide Section End-->
+
+	<div class="margin_area"></div>
+
+	<!-- Content Section -->
+
+	<section id="main_content">
+		<div class="container">
+			<div class="mini_board">
+				<div class="item">
+					<div class="mini_board_title">
+						<p>Notice</p>
+					</div>
+
+					<div class="mini_board_content">
+						<c:forEach var="i" begin="0" end="3">
+							${list[i].content}
+						</c:forEach>
+					</div>
+
+					<a href="/notice/noticeList" class="item_btn gray_btn">more Notice</a>
+				</div>
+				<div class="item">
+					<div class="mini_board_title">
+						<p class="title">FAQ</p>
+					</div>
+				<div class="mini_board_content">
+						<c:forEach var="i" begin="0" end="3">
+							${free[i].content}
+						</c:forEach>
+					</div>
+					<a href="/board/list2" class="item_btn gray_btn">more FAQ</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Content Section End -->
 </body>

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import net.kanozo.dao.BoardDAO;
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
+import net.kanozo.domain.SampleFreeVO;
+import net.kanozo.domain.SampleListVO;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -38,11 +40,11 @@ public class BoardServiceImpl implements BoardService {
 	public Integer countArticle(Criteria cri) {
 		return dao.getCnt(cri);
 	}
-	
+
 	public void updateArticle2(BoardVO board) {
 		dao.update2(board);
 	}
-	
+
 	@Override
 	public List<BoardVO> getArticleList2(Criteria cri) {
 		return dao.list2(cri);
@@ -57,8 +59,19 @@ public class BoardServiceImpl implements BoardService {
 	public void writeArticle2(BoardVO board) {
 		dao.write2(board);
 	}
+
 	@Override
 	public BoardVO viewArticle2(Integer id) {
 		return dao.view2(id);
+	}
+
+	@Override
+	public List<SampleListVO> sampleList() {
+		return dao.sampleList();
+	}
+	
+	@Override
+	public List<SampleFreeVO> sampleFree() {
+		return dao.sampleFree();
 	}
 }

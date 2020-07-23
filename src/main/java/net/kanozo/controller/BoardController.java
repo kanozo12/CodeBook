@@ -114,7 +114,6 @@ public class BoardController {
 
 		if (board.getId() != null) {
 			BoardVO data = service.viewArticle(board.getId());
-			System.out.println(data + "\n" + user);
 			if (data == null || !user.getUserid().equals(data.getWriter())) {
 				rttr.addFlashAttribute("msg", "권한이 없습니다.");
 				return "redirect:/board/list.page";
@@ -143,7 +142,13 @@ public class BoardController {
 				String originalFilename = mpf.getOriginalFilename(); // 파일명
 				System.out.println("OriginFileName => " + originalFilename);
 				String fileFullPath = filePath + "/" + System.currentTimeMillis() + originalFilename; // 파일 전체 경로
-				String saveFile = System.currentTimeMillis() + originalFilename;
+
+				String saveFile = originalFilename;
+				if (originalFilename.isEmpty()) {
+					saveFile = "";
+				} else {
+					saveFile = System.currentTimeMillis() + originalFilename;
+				}
 
 				try {
 					// 파일 저장
@@ -153,13 +158,11 @@ public class BoardController {
 					e.printStackTrace();
 				}
 			}
-//			String saveFile = System.currentTimeMillis() + originFileName;
-//			board.setFileName(saveFile);
 			service.writeArticle(board);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 			session.setAttribute("user", user);
 		}
-		return "redirect:/board/list.page";
+		return "board/list.page";
 
 	}
 
@@ -179,7 +182,7 @@ public class BoardController {
 
 			if (board.getId() != null) {
 				BoardVO data = service.viewArticle2(board.getId());
-				System.out.println(data + "\n" + user);
+
 				if (data == null || !user.getUserid().equals(data.getWriter())) {
 					rttr.addFlashAttribute("msg", "권한이 없습니다.");
 					return "redirect:/board/list2";

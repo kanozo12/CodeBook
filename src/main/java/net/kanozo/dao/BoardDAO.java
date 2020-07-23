@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
+import net.kanozo.domain.SampleFreeVO;
+import net.kanozo.domain.SampleListVO;
 
 public interface BoardDAO {
 	// 글을 쓰는 메서드
@@ -38,4 +40,8 @@ public interface BoardDAO {
 
 	// 현재 글의 갯수
 	public Integer getCnt2(Criteria cri);
+	
+	public List<SampleListVO> sampleList();
+	
+	public List<SampleFreeVO> sampleFree();
 }

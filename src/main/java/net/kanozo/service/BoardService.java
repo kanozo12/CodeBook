@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
+import net.kanozo.domain.SampleFreeVO;
+import net.kanozo.domain.SampleListVO;
 
 public interface BoardService {
 	// 글쓰기
@@ -38,4 +40,8 @@ public interface BoardService {
 
 	// 글 갯수 가져오기
 	public Integer countArticle2(Criteria cri);
+
+	public List<SampleListVO> sampleList();
+	
+	public List<SampleFreeVO> sampleFree();
 }

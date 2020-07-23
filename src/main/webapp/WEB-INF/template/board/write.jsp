@@ -16,7 +16,7 @@
                     <h2>글 수정</h2>
                 </c:if>
 				
-                <form method="post" enctype="multipart/form-data" id="uploadForm" name="uploadForm">
+                <form method="post" enctype="multipart/form-data" id="uploadForm" name="uploadForm" action="/board/write">
                     <!-- <input type="hidden" th:field="*{id}" /> -->
                     <div class="form-group">
                         <label for="title">글 제목</label> <input type="text" class="form-control" name="title" id="title"
@@ -42,7 +42,7 @@
                     </div>
                     <a href="javascript:uploadFile();" class="btn btn-primary">글쓰기</a>
                    <button onclick="uploadFile();" class="btn btn-primary">글쓰기</button>
-                   
+
                 </form>
             </div>
         </div>

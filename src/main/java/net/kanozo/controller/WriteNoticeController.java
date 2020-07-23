@@ -89,7 +89,7 @@ public class WriteNoticeController {
 
 		if (noticeVO.getId() != null) {
 			NoticeVO data = noticeService.viewArticle(noticeVO.getId());
-			System.out.println(data + "\n" + user);
+
 			if (data == null || !user.getUserid().equals(data.getWriter())) {
 				rttr.addFlashAttribute("msg", "권한이 없습니다.");
 				return "redirect:/board/noticeList";
@@ -102,13 +102,13 @@ public class WriteNoticeController {
 		LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
 		String clean = filter.doFilter(noticeVO.getContent());
 		noticeVO.setContent(clean);
-		System.out.println("!!!!!!!!!!!!!" + noticeVO);
+
 		// 실제 DB에 글을 기록함.
 		if (noticeVO.getId() != null) {
-
-			System.out.println(noticeVO);
 			// 글 수정
-			if (multi != null) {
+			if (multi.isEmpty()) {
+				noticeVO.setFileName("");
+			} else {
 				noticeVO.setFileName(saveFile(multi));
 			}
 
@@ -116,38 +116,22 @@ public class WriteNoticeController {
 
 		} else {
 			// 글 작성
-
 			try {
-				noticeVO.setFileName(saveFile(multi));
-
+				if (multi.isEmpty()) {
+					noticeVO.setFileName("");
+				} else {
+					noticeVO.setFileName(saveFile(multi));
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
+			System.out.println(noticeVO);
 			noticeService.writeArticle(noticeVO);
 			user = userService.appExp(user.getUserid(), ExpData.MEDIUM); // 글을 한번 쓸 때마다 5의 exp를 지급
 			session.setAttribute("user", user);
 		}
 
 		return "redirect:/board/noticeList";
-	}
-
-	private String saveFile(MultipartFile file) {
-		// 파일 이름 변경
-		UUID uuid = UUID.randomUUID();
-		String saveName = uuid + "_" + file.getOriginalFilename();
-
-		// 저장할 File 객체를 생성(껍데기 파일)
-		File saveFile = new File(UPLOAD_PATH, saveName); // 저장할 폴더 이름, 저장할 파일 이름
-
-		try {
-			file.transferTo(saveFile); // 업로드 파일에 saveFile이라는 껍데기 입힘
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return saveName;
 	}
 
 	@RequestMapping(value = "noticeView/{id}", method = RequestMethod.GET)
@@ -187,6 +171,24 @@ public class WriteNoticeController {
 		noticeService.deleteArticle(id);
 		rttr.addFlashAttribute("msg", "성공적으로 삭제되었습니다.");
 		return "redirect:/board/noticeList.page";
+	}
+	
+	private String saveFile(MultipartFile file) {
+		// 파일 이름 변경
+		UUID uuid = UUID.randomUUID();
+		String saveName = uuid + "_" + file.getOriginalFilename();
+
+		// 저장할 File 객체를 생성(껍데기 파일)
+		File saveFile = new File(UPLOAD_PATH, saveName); // 저장할 폴더 이름, 저장할 파일 이름
+
+		try {
+			file.transferTo(saveFile); // 업로드 파일에 saveFile이라는 껍데기 입힘
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return saveName;
 	}
 	// *************** 공지사랑 게시판 만들기 ***********************
 }

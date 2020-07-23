@@ -5,7 +5,7 @@
 <header class="mb-4">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 	    <a class="navbar-brand" href="/">
-	        <img src="/resources/logo.jpg" width="30" height="30" alt="" />
+	       <!--  <img src="/resources/logo.jpg" width="30" height="30" alt="" /> -->
 	        CodeBook
 	    </a>
 	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
