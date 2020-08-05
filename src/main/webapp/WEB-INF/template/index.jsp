@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <body>
 	<!-- Main Slide Section -->
 	<section id="slide">
@@ -29,86 +31,16 @@
 		<div class="card">
 			<div class="swiper-container2">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample1.jpg">
+					<c:forEach var="i" begin="1" end="${fn:length(slideItem)}">
+						<div class="swiper-slide">
+							<div class="slide-item">
+								<div class="img">
+									<img src="/app/img/sample1.jpg">
+								</div>
+								<div class="content">${slideItem[i].content}</div>
 							</div>
-							<div class="content"></div>
 						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample2.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample3.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample4.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample5.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample6.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample7.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample8.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample9.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="slide-item">
-							<div class="img">
-								<img src="img/sample10.jpg">
-							</div>
-							<div class="content"></div>
-						</div>
-					</div>
+					</c:forEach>
 				</div>
 			</div>
 
@@ -135,13 +67,14 @@
 						</c:forEach>
 					</div>
 
-					<a href="/notice/noticeList" class="item_btn gray_btn">more Notice</a>
+					<a href="/notice/noticeList" class="item_btn gray_btn">more
+						Notice</a>
 				</div>
 				<div class="item">
 					<div class="mini_board_title">
 						<p class="title">FAQ</p>
 					</div>
-				<div class="mini_board_content">
+					<div class="mini_board_content">
 						<c:forEach var="i" begin="0" end="3">
 							${free[i].content}
 						</c:forEach>

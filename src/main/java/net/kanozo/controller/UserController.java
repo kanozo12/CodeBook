@@ -83,6 +83,7 @@ public class UserController {
 		}
 
 		session.setAttribute("user", user);
+		System.out.println(user);
 		
 		return "redirect:/"; // 로그인 성공시 메인페이지로 리다이렉트\
 	}

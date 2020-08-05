@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.kanozo.domain.BoardVO;
 import net.kanozo.domain.Criteria;
+import net.kanozo.domain.MainSlideItemVO;
 import net.kanozo.domain.SampleFreeVO;
 import net.kanozo.domain.SampleListVO;
 
@@ -42,6 +43,9 @@ public interface BoardService {
 	public Integer countArticle2(Criteria cri);
 
 	public List<SampleListVO> sampleList();
-	
+
 	public List<SampleFreeVO> sampleFree();
+
+	public List<MainSlideItemVO> getSlideItem();
+
 }

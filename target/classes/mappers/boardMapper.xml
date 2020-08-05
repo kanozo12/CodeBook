@@ -108,5 +108,9 @@
 	<select id="sampleFree" resultType="SampleFreeVO">
 		SELECT ID, CONTENT FROM SPRING_BOARDS2 ORDER BY ID
 	</select>
+	
+	<select id="slideItem" resultType="MainSlideItemVO">
+		SELECT CONTENT FROM SPRING_BOARDS2 ORDER BY ID
+	</select>
 </mapper>
  
